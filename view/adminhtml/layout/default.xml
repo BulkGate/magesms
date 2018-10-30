@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <head>
+        <css src="Topefekt_Magesms::css/menu.css"/>
+        <css src="Topefekt_Magesms::css/styles.css"/>
+    </head>
+    <body>
+        <!--<referenceBlock name="page.menu" remove="true" />-->
+        <referenceContainer name="page.menu">
+            <block class="Topefekt\Magesms\Block\Adminhtml\Menu" name="menu" as="menu" template="Magento_Backend::menu.phtml"/>
+        </referenceContainer>
+        <referenceContainer name="content">
+            <block class="Magento\Backend\Block\Template" name="magesms.page" template="Topefekt_Magesms::layout.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

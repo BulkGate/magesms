@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Backend::stores">
+                    <resource id="Magento_Backend::stores_settings">
+                        <resource id="Magento_Config::config">
+                            <resource id="Topefekt_Magesms::config" title="Mage SMS Section" translate="title" sortOrder="50" />
+                        </resource>
+                    </resource>
+                </resource>
+                <resource id="Topefekt_Magesms::magesms" title="Mage SMS" sortOrder="500">
+                    <resource id="Topefekt_Magesms::magesms_dashboard" title="Dashboard" />
+                    <resource id="Topefekt_Magesms::magesms_sendsms" title="Send SMS" />
+                    <resource id="Topefekt_Magesms::magesms_marketing" title="Marketing SMS" />
+                    <resource id="Topefekt_Magesms::magesms_history" title="SMS History" />
+                    <resource id="Topefekt_Magesms::magesms_statistics" title="Statistics" />
+                    <resource id="Topefekt_Magesms::magesms_answers" title="SMS Answers" />
+                    <resource id="Topefekt_Magesms::magesms_purchasecredit" title="Purchase Credit" />
+                    <resource id="Topefekt_Magesms::magesms_sign_in" title="Sign-in" />
+                    <resource id="Topefekt_Magesms::magesms_sign_up" title="Sign-up" />
+                    <resource id="Topefekt_Magesms::magesms_about" title="About" />
+                    <resource id="Topefekt_Magesms::magesms_settings" title="Settings">
+                        <resource id="Topefekt_Magesms::magesms_profile" title="Edit user account" />
+                        <resource id="Topefekt_Magesms::magesms_adminsms" title="Admin SMS" />
+                        <resource id="Topefekt_Magesms::magesms_customersms" title="Customer SMS" />
+                        <resource id="Topefekt_Magesms::magesms_optout" title="SMS opt-out" />
+                        <resource id="Topefekt_Magesms::magesms_wizard" title="SMS Settings" />
+                        <resource id="Topefekt_Magesms::magesms_system_settings" title="System Settings" />
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

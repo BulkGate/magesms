@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="magesms_tab" translate="label" sortOrder="500">
+            <label>Mage SMS</label>
+        </tab>
+        <section id="magesms" translate="label" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <tab>magesms_tab</tab>
+            <label>Configuration</label>
+            <resource>Topefekt_Magesms::config</resource>
+            <group id="magesms" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Mage SMS module</label>
+                <field id="enable" type="select" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Mage SMS</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="customer_groups_enable" type="select" translate="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable SMS sending for certain customer groups only</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="customer_groups" type="multiselect" translate="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Customer Groups</label>
+                    <source_model>Topefekt\Magesms\Model\System\Config\Customergroups</source_model>
+                    <depends>
+                        <field id="customer_groups_enable">1</field>
+                    </depends>
+                </field>
+                <field id="connector" type="select" translate="label" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Connector</label>
+                    <source_model>Topefekt\Magesms\Model\System\Config\Connector</source_model>
+                </field>
+            </group>
+            <group id="template" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>SMS Templates Language</label>
+                <field id="language" type="select" translate="label" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Language</label>
+                    <source_model>Topefekt\Magesms\Model\System\Config\Lang</source_model>
+                </field>
+            </group>
+            <group id="api" translate="label" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>API</label>
+                <field id="active" type="select" translate="label" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="apikey" type="text" translate="label comment" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>API Key</label>
+                    <comment>API secured key</comment>
+                    <frontend_model>Topefekt\Magesms\Block\System\Config\Apikeygenerator</frontend_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="active">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

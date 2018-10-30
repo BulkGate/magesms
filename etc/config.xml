@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../Store/etc/config.xsd">
+	<default>
+		<magesms>
+			<activated>0</activated>
+			<nonactivated>1</nonactivated>
+		</magesms>
+	</default>
+</config>
