@@ -1,5 +1,5 @@
 <?php
-namespace Topefekt\Magesms\Observer;
+namespace BulkGate\Magesms\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
@@ -10,7 +10,7 @@ class UpdateOrderStatusObserver implements ObserverInterface
 	protected $_registry;
 
 	public function __construct(
-		\Topefekt\Magesms\Bulkgate\MageSMS $mageSMS,
+		\BulkGate\Magesms\Bulkgate\MageSMS $mageSMS,
 		\Magento\Framework\Registry $registry
 	) {
 		$this->_magesms = $mageSMS;

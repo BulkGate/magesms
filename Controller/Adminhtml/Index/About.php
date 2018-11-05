@@ -1,12 +1,12 @@
 <?php
-namespace Topefekt\Magesms\Controller\Adminhtml\Index;
+namespace BulkGate\Magesms\Controller\Adminhtml\Index;
 
-class About extends \Topefekt\Magesms\Controller\Adminhtml\Action
+class About extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
 	public function execute()
 	{
 		$resultPage = $this->_resultPageFactory->create();
-		$resultPage->setActiveMenu('Topefekt_Magesms::magesms_about');
+		$resultPage->setActiveMenu('BulkGate_Magesms::magesms_about');
 		$this->_addBreadcrumb(__('About'), __('About'));
 		$resultPage->getConfig()->getTitle()->prepend(__('About'));
 
@@ -27,7 +27,7 @@ class About extends \Topefekt\Magesms\Controller\Adminhtml\Action
 
 	protected function _isAllowed()
 	{
-		return $this->_authorization->isAllowed('Topefekt_Magesms::magesms_about');
+		return $this->_authorization->isAllowed('BulkGate_Magesms::magesms_about');
 	}
 
 }

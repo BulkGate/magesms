@@ -1,5 +1,5 @@
 <?php
-namespace Topefekt\Magesms\Bulkgate;
+namespace BulkGate\Magesms\Bulkgate;
 
 
 use BulkGate\Extensions\Database\IDatabase;

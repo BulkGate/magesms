@@ -1,6 +1,6 @@
 <?php
 
-namespace Topefekt\Magesms\Helper;
+namespace BulkGate\Magesms\Helper;
 
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\Context;

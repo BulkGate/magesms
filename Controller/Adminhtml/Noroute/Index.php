@@ -1,10 +1,10 @@
 <?php
 
-namespace Topefekt\Magesms\Controller\Adminhtml\Noroute;
+namespace BulkGate\Magesms\Controller\Adminhtml\Noroute;
 
 use Magento\Framework\App\RequestInterface;
 
-class Index extends \Topefekt\Magesms\Controller\Adminhtml\Action
+class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
 	public function dispatch(RequestInterface $request)
 	{
@@ -19,7 +19,7 @@ class Index extends \Topefekt\Magesms\Controller\Adminhtml\Action
 		if ($actionName == 'index') {
 			$actionName = 'default';
 		}
-		$resultPage->setActiveMenu('Topefekt_Magesms::magesms_'.$controllerName.($actionName!='default'?"_$actionName":''));
+		$resultPage->setActiveMenu('BulkGate_Magesms::magesms_'.$controllerName.($actionName!='default'?"_$actionName":''));
 		//$this->_addBreadcrumb(__('About'), __('About'));
 		//$resultPage->getConfig()->getTitle()->prepend(__('About'));
 
@@ -40,7 +40,7 @@ class Index extends \Topefekt\Magesms\Controller\Adminhtml\Action
 
 	protected function _isAllowed()
 	{
-		return $this->_authorization->isAllowed('Topefekt_Magesms::magesms');
+		return $this->_authorization->isAllowed('BulkGate_Magesms::magesms');
 	}
 
 

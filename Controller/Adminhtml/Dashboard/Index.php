@@ -1,14 +1,14 @@
 <?php
-namespace Topefekt\Magesms\Controller\Adminhtml\Dashboard;
+namespace BulkGate\Magesms\Controller\Adminhtml\Dashboard;
 
-class Index extends \Topefekt\Magesms\Controller\Adminhtml\Action
+class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
 	public function execute()
 	{
 		$this->synchronize();
 
 		$resultPage = $this->_resultPageFactory->create();
-		$resultPage->setActiveMenu('Topefekt_Magesms::magesms_dashboard');
+		$resultPage->setActiveMenu('BulkGate_Magesms::magesms_dashboard');
 		$this->_addBreadcrumb(__('Dashboard'), __('Dashboard'));
 		$resultPage->getConfig()->getTitle()->prepend(__('Dashboard'));
 
@@ -29,7 +29,7 @@ class Index extends \Topefekt\Magesms\Controller\Adminhtml\Action
 
 	protected function _isAllowed()
 	{
-		return $this->_authorization->isAllowed('Topefekt_Magesms::magesms_dashboard');
+		return $this->_authorization->isAllowed('BulkGate_Magesms::magesms_dashboard');
 	}
 
 }

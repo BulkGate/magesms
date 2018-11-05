@@ -1,6 +1,6 @@
 <?php
 
-namespace Topefekt\Magesms\Block\Adminhtml;
+namespace BulkGate\Magesms\Block\Adminhtml;
 
 class Menu extends \Magento\Backend\Block\Menu
 {
@@ -8,7 +8,7 @@ class Menu extends \Magento\Backend\Block\Menu
 	{
 		/** @var \Magento\Backend\Model\Menu\Item $item */
 //		foreach ($menu as $item) {
-//			if ($item->toArray()['module'] == 'Topefekt_Magesms') {
+//			if ($item->toArray()['module'] == 'BulkGate_Magesms') {
 //				print_r($item->toArray());
 //				exit;
 //			}

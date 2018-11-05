@@ -1,10 +1,10 @@
 <?php
-namespace Topefekt\Magesms\Controller\Adminhtml\Index;
+namespace BulkGate\Magesms\Controller\Adminhtml\Index;
 
 use BulkGate\Extensions\IO\Response;
 use Magento\Framework\DataObject;
 
-class Ajax extends \Topefekt\Magesms\Controller\Adminhtml\Action
+class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
 	public function execute()
 	{
@@ -112,7 +112,7 @@ class Ajax extends \Topefekt\Magesms\Controller\Adminhtml\Action
 
 	protected function _isAllowed()
 	{
-		return $this->_authorization->isAllowed('Topefekt_Magesms::magesms');
+		return $this->_authorization->isAllowed('BulkGate_Magesms::magesms');
 	}
 
 }

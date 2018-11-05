@@ -8,8 +8,8 @@
             <class>separator-top</class>
             <tab>magesms_tab</tab>
             <label>Configuration</label>
-            <resource>Topefekt_Magesms::config</resource>
-            <group id="magesms" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+            <resource>BulkGate_Magesms::config</resource>
+            <!--<group id="magesms" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Mage SMS module</label>
                 <field id="enable" type="select" translate="label" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Mage SMS</label>
@@ -21,39 +21,16 @@
                 </field>
                 <field id="customer_groups" type="multiselect" translate="label" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Customer Groups</label>
-                    <source_model>Topefekt\Magesms\Model\System\Config\Customergroups</source_model>
+                    <source_model>BulkGate\Magesms\Model\System\Config\Customergroups</source_model>
                     <depends>
                         <field id="customer_groups_enable">1</field>
                     </depends>
                 </field>
                 <field id="connector" type="select" translate="label" sortOrder="6" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Connector</label>
-                    <source_model>Topefekt\Magesms\Model\System\Config\Connector</source_model>
+                    <source_model>BulkGate\Magesms\Model\System\Config\Connector</source_model>
                 </field>
-            </group>
-            <group id="template" translate="label" sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
-                <label>SMS Templates Language</label>
-                <field id="language" type="select" translate="label" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Language</label>
-                    <source_model>Topefekt\Magesms\Model\System\Config\Lang</source_model>
-                </field>
-            </group>
-            <group id="api" translate="label" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
-                <label>API</label>
-                <field id="active" type="select" translate="label" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Enabled</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-                <field id="apikey" type="text" translate="label comment" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>API Key</label>
-                    <comment>API secured key</comment>
-                    <frontend_model>Topefekt\Magesms\Block\System\Config\Apikeygenerator</frontend_model>
-                    <validate>required-entry</validate>
-                    <depends>
-                        <field id="active">1</field>
-                    </depends>
-                </field>
-            </group>
+            </group>-->
         </section>
     </system>
 </config>

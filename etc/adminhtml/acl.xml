@@ -6,28 +6,28 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="Topefekt_Magesms::config" title="Mage SMS Section" translate="title" sortOrder="50" />
+                            <resource id="BulkGate_Magesms::config" title="Mage SMS Section" translate="title" sortOrder="50" />
                         </resource>
                     </resource>
                 </resource>
-                <resource id="Topefekt_Magesms::magesms" title="Mage SMS" sortOrder="500">
-                    <resource id="Topefekt_Magesms::magesms_dashboard" title="Dashboard" />
-                    <resource id="Topefekt_Magesms::magesms_sendsms" title="Send SMS" />
-                    <resource id="Topefekt_Magesms::magesms_marketing" title="Marketing SMS" />
-                    <resource id="Topefekt_Magesms::magesms_history" title="SMS History" />
-                    <resource id="Topefekt_Magesms::magesms_statistics" title="Statistics" />
-                    <resource id="Topefekt_Magesms::magesms_answers" title="SMS Answers" />
-                    <resource id="Topefekt_Magesms::magesms_purchasecredit" title="Purchase Credit" />
-                    <resource id="Topefekt_Magesms::magesms_sign_in" title="Sign-in" />
-                    <resource id="Topefekt_Magesms::magesms_sign_up" title="Sign-up" />
-                    <resource id="Topefekt_Magesms::magesms_about" title="About" />
-                    <resource id="Topefekt_Magesms::magesms_settings" title="Settings">
-                        <resource id="Topefekt_Magesms::magesms_profile" title="Edit user account" />
-                        <resource id="Topefekt_Magesms::magesms_adminsms" title="Admin SMS" />
-                        <resource id="Topefekt_Magesms::magesms_customersms" title="Customer SMS" />
-                        <resource id="Topefekt_Magesms::magesms_optout" title="SMS opt-out" />
-                        <resource id="Topefekt_Magesms::magesms_wizard" title="SMS Settings" />
-                        <resource id="Topefekt_Magesms::magesms_system_settings" title="System Settings" />
+                <resource id="BulkGate_Magesms::magesms" title="Mage SMS" sortOrder="500">
+                    <resource id="BulkGate_Magesms::magesms_dashboard" title="Dashboard" />
+                    <resource id="BulkGate_Magesms::magesms_sendsms" title="Send SMS" />
+                    <resource id="BulkGate_Magesms::magesms_marketing" title="Marketing SMS" />
+                    <resource id="BulkGate_Magesms::magesms_history" title="SMS History" />
+                    <resource id="BulkGate_Magesms::magesms_statistics" title="Statistics" />
+                    <resource id="BulkGate_Magesms::magesms_answers" title="SMS Answers" />
+                    <resource id="BulkGate_Magesms::magesms_purchasecredit" title="Purchase Credit" />
+                    <resource id="BulkGate_Magesms::magesms_sign_in" title="Sign-in" />
+                    <resource id="BulkGate_Magesms::magesms_sign_up" title="Sign-up" />
+                    <resource id="BulkGate_Magesms::magesms_about" title="About" />
+                    <resource id="BulkGate_Magesms::magesms_settings" title="Settings">
+                        <resource id="BulkGate_Magesms::magesms_profile" title="Edit user account" />
+                        <resource id="BulkGate_Magesms::magesms_adminsms" title="Admin SMS" />
+                        <resource id="BulkGate_Magesms::magesms_customersms" title="Customer SMS" />
+                        <resource id="BulkGate_Magesms::magesms_optout" title="SMS opt-out" />
+                        <resource id="BulkGate_Magesms::magesms_wizard" title="SMS Settings" />
+                        <resource id="BulkGate_Magesms::magesms_system_settings" title="System Settings" />
                     </resource>
                 </resource>
             </resource>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Topefekt\Magesms\Controller\Adminhtml;
+namespace BulkGate\Magesms\Controller\Adminhtml;
 
 class Router extends \Magento\Backend\App\Router
 {

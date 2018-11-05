@@ -1,14 +1,14 @@
 <?php
-namespace Topefekt\Magesms\Controller\Adminhtml\Sign;
+namespace BulkGate\Magesms\Controller\Adminhtml\Sign;
 
-class Up extends \Topefekt\Magesms\Controller\Adminhtml\Action
+class Up extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
 	public function execute()
 	{
 		$this->synchronize();
 
 		$resultPage = $this->_resultPageFactory->create();
-		$resultPage->setActiveMenu('Topefekt_Magesms::magesms_sign_up');
+		$resultPage->setActiveMenu('BulkGate_Magesms::magesms_sign_up');
 		$this->_addBreadcrumb(__('Sign-in'), __('Sign-up'));
 		$resultPage->getConfig()->getTitle()->prepend(__('Sign-up'));
 
@@ -29,7 +29,7 @@ class Up extends \Topefekt\Magesms\Controller\Adminhtml\Action
 
 	protected function _isAllowed()
 	{
-		return $this->_authorization->isAllowed('Topefekt_Magesms::magesms_sign_up');
+		return $this->_authorization->isAllowed('BulkGate_Magesms::magesms_sign_up');
 	}
 
 }

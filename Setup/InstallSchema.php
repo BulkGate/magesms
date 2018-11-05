@@ -1,10 +1,10 @@
 <?php
-namespace Topefekt\Magesms\Setup;
+namespace BulkGate\Magesms\Setup;
 
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
-use Topefekt\Magesms\Bulkgate\DIContainer;
+use BulkGate\Magesms\Bulkgate\DIContainer;
 
 class InstallSchema implements InstallSchemaInterface
 {

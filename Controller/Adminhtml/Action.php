@@ -1,16 +1,16 @@
 <?php
 
-namespace Topefekt\Magesms\Controller\Adminhtml;
+namespace BulkGate\Magesms\Controller\Adminhtml;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\RequestInterface;
-use Topefekt\Magesms\Bulkgate\DIContainer;
+use BulkGate\Magesms\Bulkgate\DIContainer;
 use BulkGate\Extensions\IO\InvalidResultException;
-use Topefekt\Magesms\Bulkgate\MageSMS;
-use Topefekt\Magesms\Helper\Data;
+use BulkGate\Magesms\Bulkgate\MageSMS;
+use BulkGate\Magesms\Helper\Data;
 
 abstract class Action extends \Magento\Backend\App\Action
 {
@@ -155,7 +155,7 @@ abstract class Action extends \Magento\Backend\App\Action
 
 	protected function _isAllowed()
 	{
-		return $this->_authorization->isAllowed('Topefekt_Magesms::magesms');
+		return $this->_authorization->isAllowed('BulkGate_Magesms::magesms');
 	}
 
 	public function _initAction()

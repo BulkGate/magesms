@@ -1,5 +1,5 @@
 <?php
-namespace Topefekt\Magesms\Bulkgate;
+namespace BulkGate\Magesms\Bulkgate;
 
 use Bulkgate\Extensions\Database\Result;
 use BulkGate\Extensions\Exception;

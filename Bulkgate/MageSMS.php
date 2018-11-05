@@ -1,6 +1,6 @@
 <?php
 
-namespace Topefekt\Magesms\Bulkgate;
+namespace BulkGate\Magesms\Bulkgate;
 
 use BulkGate\Extensions\IModule;
 use BulkGate\Extensions\Settings;
@@ -119,7 +119,7 @@ class MageSMS extends Strict implements IModule
 	public function info($key = null)
 	{
 		if (empty($this->plugin_data)) {
-			$module = $this->objectManager->get(\Magento\Framework\Module\ModuleList::class)->getOne('Topefekt_Magesms');
+			$module = $this->objectManager->get(\Magento\Framework\Module\ModuleList::class)->getOne('BulkGate_Magesms');
 			$this->plugin_data = array_merge(
 				array(
 					'version' => $module['setup_version'],
