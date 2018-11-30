@@ -6,7 +6,9 @@ use BulkGate\Extensions\Database\IDatabase;
 
 class Customers extends \BulkGate\Extensions\Customers
 {
+	/** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $cache */
 	private $cache;
+	private $customers = array();
 
 	public function __construct(IDatabase $db)
 	{
@@ -16,10 +18,7 @@ class Customers extends \BulkGate\Extensions\Customers
 
 	protected function loadCustomers(array $customers, $limit = null)
 	{
-		$collection = $this->getCustomerCollection();
-		if (!empty($customers)) {
-			$collection->addFilter('entity_id', $customers);
-		}
+		$collection = $this->getCustomerCollection($customers);
 		$collection->getSelect()->limit($limit);
 		return $collection->getData();
 	}
@@ -39,10 +38,11 @@ class Customers extends \BulkGate\Extensions\Customers
 		return '';
 	}
 
-	public function getCustomerCollection() {
-		if ($this->cache) {
+	public function getCustomerCollection(array $customers = array()) {
+		if ($this->cache && $this->customers === $customers) {
 			return $this->cache;
 		}
+		$this->customers = $customers;
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 		/** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
 		$collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
@@ -52,25 +52,25 @@ class Customers extends \BulkGate\Extensions\Customers
 			->joinAttribute('billing_city', 'customer_address/city', 'default_billing', null, 'left')
 			->joinAttribute('billing_country_id', 'customer_address/country_id', 'default_billing', null, 'left')
 			->joinAttribute('shipping_country_id', 'customer_address/country_id', 'default_shipping', null, 'left');
-		$filter = [
-			[
+		$filter = array(
+			array(
 				'attribute' => 'billing_telephone',
-				[['notnull' => true], ['neq' => '']]
-			],
-			[
+				array(array('notnull' => true), array('neq' => ''))
+			),
+			array(
 				'attribute' => 'shipping_telephone',
-				[['notnull' => true], ['neq' => '']]
-			]
-		];
+				array(array('notnull' => true), array('neq' => ''))
+			)
+		);
 		/** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute $attrObj */
 		$attrObj = $objectManager->get(\Magento\Catalog\Model\ResourceModel\Eav\Attribute::class);
 		$attr = $attrObj->loadByCode('customer', 'mobile');
 		if ($attr->getId()) {
 			$collection->joinAttribute('customer_mobile', 'customer/mobile', 'mobile', null, 'left');
-			$filter[] = [
+			$filter[] = array(
 				'attribute' => 'mobile',
-				[['notnull' => true], ['neq' => '']]
-			];
+				array(array('notnull' => true), array('neq' => ''))
+			);
 		}
 		$collection->addFieldToFilter($filter);
 
@@ -96,8 +96,16 @@ class Customers extends \BulkGate\Extensions\Customers
 				->columns('IF(`at_shipping_country_id`.`country_id`, `at_shipping_country_id`.`country_id`, `at_billing_country_id`.`country_id`) AS country_id');
 //		}
 
+		if ($customers) {
+			$collection->addFieldToFilter('entity_id', array('in' => $customers));
+		}
+		$collection->getSelect()
+			->columns('e.firstname AS first_name');
+		$collection->getSelect()
+			->columns('e.lastname AS last_name');
+
 		return $this->cache = $collection;
-		return $this->db->execute("
+/*		return $this->db->execute("
             SELECT      `user_id` AS `order`,
                         MAX(CASE WHEN meta_key = 'billing_first_name' AND meta_value IS NOT NULL THEN meta_value ELSE (CASE WHEN meta_key = 'first_name' THEN  meta_value ELSE (CASE WHEN meta_key = 'shipping_first_name' THEN  meta_value END) END) END) first_name,
                         MAX(CASE WHEN meta_key = 'billing_last_name' AND meta_value IS NOT NULL THEN meta_value ELSE (CASE WHEN meta_key = 'last_name' THEN  meta_value ELSE (CASE WHEN meta_key = 'shipping_last_name' THEN  meta_value END)  END) END) last_name,
@@ -113,7 +121,7 @@ class Customers extends \BulkGate\Extensions\Customers
             ". (count($customers) > 0 ? "WHERE `user_id` IN ('".implode("','", $customers)."') " : "") . "
             GROUP BY `user_id`
             HAVING `phone_mobile` NOT LIKE '' 	
-            ". ($limit !== null ? "LIMIT $limit" : ""))->getRows();
+            ". ($limit !== null ? "LIMIT $limit" : ""))->getRows();*/
 	}
 
 
