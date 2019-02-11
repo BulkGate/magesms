@@ -3,8 +3,7 @@
   "description": "SMS notification & SMS marketing module for Magento. Free SMS module for Magento with advanced features and user friendly design.",
   "homepage": "http://www.mage-sms.com",
   "require": {
-    "php": "~5.6.0|7.0.2|7.0.4|~7.0.6",
-    "magento/framework": "*"
+    "php": "~5.6.0|7.0.2|7.0.4|~7.1.0|~7.2.0"
   },
   "type": "magento2-module",
   "version": "3.0.0",
