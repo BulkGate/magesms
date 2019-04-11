@@ -113,7 +113,7 @@ class MageSMS extends Strict implements IModule
 
 	public function url()
 	{
-		// TODO: Implement url() method.
+		return $this->getUrl('/');
 	}
 
 	public function info($key = null)
