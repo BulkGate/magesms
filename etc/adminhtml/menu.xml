@@ -21,7 +21,5 @@
         <add id="BulkGate_Magesms::magesms_module_notifications_customer" title="Customer SMS" module="BulkGate_Magesms" sortOrder="30" parent="BulkGate_Magesms::magesms_settings" action="magesms/module_notifications/customer" resource="BulkGate_Magesms::magesms_module_notifications_customer" />
         <add id="BulkGate_Magesms::magesms_sms_settings" title="Sender ID Profiles" module="BulkGate_Magesms" sortOrder="30" parent="BulkGate_Magesms::magesms_settings" action="magesms/sms_settings" resource="BulkGate_Magesms::magesms_sms_settings" />
         <add id="BulkGate_Magesms::magesms_module_settings" title="Settings" module="BulkGate_Magesms" sortOrder="50" parent="BulkGate_Magesms::magesms_settings" action="magesms/module_settings" resource="BulkGate_Magesms::magesms_module_settings" />
-        <add id="BulkGate_Magesms::magesms_verified_phone_numbers" title="Verified Numbers" module="BulkGate_Magesms" sortOrder="50" parent="BulkGate_Magesms::magesms_settings" action="magesms/verified_phone_numbers" resource="BulkGate_Magesms::magesms_verified_phone_numbers" />
-        <!--<add id="BulkGate_Magesms::magesms_system_settings" title="System Settings" module="BulkGate_Magesms" sortOrder="60" parent="BulkGate_Magesms::magesms_settings" action="adminhtml/system_config/edit/section/magesms" resource="Magento_Config::config" />-->
     </menu>
 </config>
