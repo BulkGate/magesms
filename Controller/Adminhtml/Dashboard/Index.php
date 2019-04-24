@@ -21,7 +21,7 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
 			$block->setSettings($settings);
 			$block->setPresenter('Dashboard');
 			$block->setAction('default');
-			$block->setTitle($resultPage->getConfig()->getTitle()->get());
+			$block->setTitle(__('Dashboard'));
 			$block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(), $block->getFormKey()));
 		}
 		return $resultPage;

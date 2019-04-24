@@ -20,7 +20,8 @@ class About extends \BulkGate\Magesms\Controller\Adminhtml\Action
 			$block->setSettings($settings);
 			$block->setPresenter('ModuleAbout');
 			$block->setAction('default');
-			$block->setTitle($resultPage->getConfig()->getTitle()->get());
+//			die($resultPage->getConfig()->getTitle()->get());
+			$block->setTitle(__('About'));
 		}
 		return $resultPage;
 	}

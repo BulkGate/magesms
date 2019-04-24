@@ -19,20 +19,34 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
 		if ($actionName == 'index') {
 			$actionName = 'default';
 		}
-		$resultPage->setActiveMenu('BulkGate_Magesms::magesms_'.$controllerName.($actionName!='default'?"_$actionName":''));
-		//$this->_addBreadcrumb(__('About'), __('About'));
-		//$resultPage->getConfig()->getTitle()->prepend(__('About'));
+		$resultPage->setActiveMenu('BulkGate_Magesms::magesms');
 
 		$module = $this->getDIContainer()->getModule();
 		$settings = $this->getDIContainer()->getSettings();
 
 		$block = $resultPage->getLayout()->getBlock('magesms.page');
 		if ($block) {
+			$titleSource = 'BulkGate_Magesms::magesms_'.$controllerName;
+			if ($actionName !== 'default') {
+				$titleSource .= '_'.$actionName;
+			}
+			$object = \Magento\Framework\App\ObjectManager::getInstance();
+			/** @var $menu \Magento\Backend\Model\Menu */
+			$menu = $object->get(\Magento\Backend\Model\Menu\Config::class)->getMenu()
+				->get('BulkGate_Magesms::magesms');
+			$title = $menu->getChildren()
+				->get($titleSource);
+			if ($title) {
+				$title = $title->getTitle();
+			} else {
+				$title = $menu->getChildren()->get('BulkGate_Magesms::magesms_'.$controllerName)->getTitle();
+
+			}
 			$block->setModule($module);
 			$block->setSettings($settings);
 			$block->setPresenter(str_replace('_', '', ucwords($controllerName, '_')));
 			$block->setAction($actionName);
-			$block->setTitle($resultPage->getConfig()->getTitle()->get());
+			$block->setTitle($title);
 			$block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(), $block->getFormKey()));
 		}
 		return $resultPage;
