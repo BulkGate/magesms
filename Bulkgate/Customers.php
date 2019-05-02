@@ -77,12 +77,15 @@ class Customers extends \BulkGate\Extensions\Customers
 	protected function filter(array $filters)
 	{
 		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+		/** @var \Magento\Framework\App\ResourceConnection $resource */
+		$resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
 		$customers = array();
 		$filtered = false;
 		foreach ($filters as $key => $filter) {
 			if (isset($filter['values']) && count($filter['values']) > 0 && !$this->empty) {
 				/** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
 				$collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
+				$collection->addNameToSelect();
 				switch ($key) {
 					case 'firstname':
 						$collection->addFieldToFilter('firstname', $this->getCondition($filter));
@@ -107,7 +110,6 @@ class Customers extends \BulkGate\Extensions\Customers
 							->columns('IFNULL(`at_shipping_country_id`.`country_id`, `at_billing_country_id`.`country_id`) AS country_id');
 
 						$collection->getSelect()->having($this->getSql($filter, 'country_id'));
-//						$this->getSql($filter)
 						foreach ($collection as $item) {
 							$customers[] = $item->getId();
 						}
@@ -126,12 +128,100 @@ class Customers extends \BulkGate\Extensions\Customers
 							$customers[] = $item->getId();
 						}
 						break;
+					case 'product':
+						if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false) {
+							$collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
+						}
+						$sql = $resource->getConnection()
+							->prepareSqlCondition(
+								'soi.sku', $this->getCondition($filter)
+							);
+						$collection->getSelect()
+							->join(
+								['soi' => $collection->getTable('sales_order_item')],
+								'soi.`order_id` = `'.$collection->getTable('sales_order_grid').'`.`entity_id` AND '.$sql
+							);
+						$collection->getSelect()->group('e.entity_id');
+						foreach ($collection as $item) {
+							$customers[] = $item->getId();
+						}
+						break;
+					case 'born_date':
+						$collection->addFieldToFilter('dob', $this->getCondition($filter));
+						foreach ($collection as $item) {
+							$customers[] = $item->getId();
+						}
+						break;
+					case 'newsletter':
+						if ($filter['values'][0][1] == 'no') {
+							$cond = 'ns.`subscriber_status` = 0 OR ns.`subscriber_status` IS NULL';
+						} else {
+							$cond = 'ns.`subscriber_status` = 1';
+						}
+
+						$collection->getSelect()
+							->joinLeft(
+								['ns' => $collection->getTable('newsletter_subscriber')],
+								'ns.`customer_id` = e.`entity_id`'
+							);
+						$collection->getSelect()
+							->where($cond);
+						foreach ($collection as $item) {
+							$customers[] = $item->getId();
+						}
+						break;
+					case 'all_orders_amount':
+						if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false)
+							$collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
+						$sql = $resource->getConnection()
+							->prepareSqlCondition(
+								'orders_sum', $this->getCondition($filter)
+							);
+						$collection->getSelect()
+							->columns('SUM('.$collection->getTable('sales_order_grid').'.`grand_total`) AS orders_sum')
+							->having($sql)
+							->group('e.entity_id');
+						foreach ($collection as $item) {
+							$customers[] = $item->getId();
+						}
+						break;
+					case 'registration_date':
+						$collection->addFieldToFilter('created_at', $this->getCondition($filter));
+						foreach ($collection as $item) {
+							$customers[] = $item->getId();
+						}
+						break;
+					case 'order_date':
+						if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false)
+							$collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
+						$sql = $resource->getConnection()
+							->prepareSqlCondition(
+								'created_at_sale', $this->getCondition($filter)
+							);
+						$collection->getSelect()
+							->columns($collection->getTable('sales_order_grid').'.created_at AS created_at_sale')
+							->group('e.entity_id');
+						$collection->getSelect()->having($sql);
+						foreach ($collection as $item) {
+							$customers[] = $item->getId();
+						}
+						break;
+					case 'type':
+						$collection->joinAttribute('billing_vat_id', 'customer_address/vat_id', 'default_billing', null, 'left')
+							->addFieldToFilter('billing_vat_id', $this->getCondition($filter));
+						foreach ($collection as $item) {
+							$customers[] = $item->getId();
+						}
+						break;
 				}
 			}
 			$filtered = true;
 
 		}
 
+		if (!$customers) {
+			$this->empty = true;
+		}
 		return array(array_unique($customers), $filtered);
 	}
 
