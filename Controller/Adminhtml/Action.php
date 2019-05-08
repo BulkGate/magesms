@@ -66,7 +66,7 @@ abstract class Action extends \Magento\Backend\App\Action
         }
     }
 
-    function getProxyLinks($presenter, $action, $form_key = '')
+    public function getProxyLinks($presenter, $action, $form_key = '')
     {
         $url = $this->getUrl('*/index/ajax').'?isAjax=true';
         switch ($presenter.':'.$action) {
