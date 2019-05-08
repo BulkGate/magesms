@@ -19,7 +19,7 @@ class ContactFormObserver implements ObserverInterface
         /** @var \Magento\Framework\App\Action\Action $controller */
         $controller = $observer->getControllerAction();
         $request = $controller->getRequest();
-        $this->_magesms->runHook('contact_form', new \BulkGate\Extensions\Hook\Variables(array(
+        $this->_magesms->runHook('contact_form', new \BulkGate\Extensions\Hook\Variables([
             'customer_email' => trim($request->getParam('email')),
             'customer_name' => trim($request->getParam('name')),
             'customer_phone' => trim($request->getParam('telephone')),
@@ -27,6 +27,6 @@ class ContactFormObserver implements ObserverInterface
             'customer_message_short1' => mb_substr(trim($request->getParam('comment')), 120),
             'customer_message_short2' => mb_substr(trim($request->getParam('comment')), 100),
             'customer_message_short3' => mb_substr(trim($request->getParam('comment')), 80),
-        )), $observer );
+        ]), $observer );
     }
 }

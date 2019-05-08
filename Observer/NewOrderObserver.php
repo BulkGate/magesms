@@ -30,12 +30,12 @@ class NewOrderObserver implements ObserverInterface
             return $this;
         }
 
-        $this->_magesms->runHook('order_new', new \BulkGate\Extensions\Hook\Variables(array(
+        $this->_magesms->runHook('order_new', new \BulkGate\Extensions\Hook\Variables([
             'customer_id' => $order->getCustomerId(),
             'customer_firstname' => $order->getCustomerFirstname(),
             'customer_lastname' => $order->getCustomerLastname(),
             'customer_email' => $order->getCustomerEmail(),
-        )), $observer );
+        ]), $observer );
 
     }
 }

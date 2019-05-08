@@ -37,7 +37,7 @@ abstract class Action extends \Magento\Backend\App\Action
         $settings = $this->getDIContainer()->getSettings();
         $application_token = $settings->load('static:application_token', false);
 
-        if (!$application_token && !in_array($request->getControllerName(), array('index', 'sign')))
+        if (!$application_token && !in_array($request->getControllerName(), ['index', 'sign']))
         {
             $this->getMessageManager()->addSuccessMessage(__('Not registered yet? Create account now!'));
             return $this->_redirect('*/sign/in');
@@ -74,62 +74,62 @@ abstract class Action extends \Magento\Backend\App\Action
         $url = $this->getUrl('*/index/ajax').'?isAjax=true';
         switch ($presenter.':'.$action) {
             case 'ModuleNotifications:customer':
-                return array('_generic' => array('save' => array(
+                return ['_generic' => ['save' => [
                     'url' => $url,
-                    'params' => array('action' => 'save_customer_notifications', 'form_key' => $form_key)
-                )));
+                    'params' => ['action' => 'save_customer_notifications', 'form_key' => $form_key]
+                ]]];
                 break;
             case 'ModuleNotifications:admin':
-                return array('_generic' => array('save' => array(
+                return ['_generic' => ['save' => [
                     'url' => $url,
-                    'params' => array('action' => 'save_admin_notifications', 'form_key' => $form_key)
-                )));
+                    'params' => ['action' => 'save_admin_notifications', 'form_key' => $form_key]
+                ]]];
                 break;
             case 'Sign:up':
-                return array('_generic' => array('register' => array(
+                return ['_generic' => ['register' => [
                     'url' => $url,
-                    'params' => array('action' => 'register', 'form_key' => $form_key)
-                )));
+                    'params' => ['action' => 'register', 'form_key' => $form_key]
+                ]]];
                 break;
             case 'ModuleSign:in':
-                return array('_generic' => array('login' => array(
+                return ['_generic' => ['login' => [
                     'url' => $url,
-                    'params' => array('action' => 'login', 'form_key' => $form_key)
-                )));
+                    'params' => ['action' => 'login', 'form_key' => $form_key]
+                ]]];
                 break;
             case 'ModuleSettings:default':
-                return array('_generic' => array(
-                    'save' => array(
+                return ['_generic' => [
+                    'save' => [
                         'url' => $url,
-                        'params' => array('action' => 'save_module_settings', 'form_key' => $form_key)
-                    ),
-                    'logout' => array(
+                        'params' => ['action' => 'save_module_settings', 'form_key' => $form_key]
+                    ],
+                    'logout' => [
                         'url' => $url,
-                        'params' => array('action' => 'logout_module', 'form_key' => $form_key)
-                    )));
+                        'params' => ['action' => 'logout_module', 'form_key' => $form_key]
+                    ]]];
                 break;
             case 'SmsCampaign:campaign':
-                return array('campaign' => array(
-                    'loadModuleData' => array(
+                return ['campaign' => [
+                    'loadModuleData' => [
                         'url' => $url,
-                        'params' => array('action' => 'load_module_data', 'form_key' => $form_key)
-                    ),
-                    'saveModuleCustomers' => array(
+                        'params' => ['action' => 'load_module_data', 'form_key' => $form_key]
+                    ],
+                    'saveModuleCustomers' => [
                         'url' => $url,
-                        'params' => array('action' => 'save_module_customers', 'form_key' => $form_key)
-                    ),
-                    'addModuleFilter' => array(
+                        'params' => ['action' => 'save_module_customers', 'form_key' => $form_key]
+                    ],
+                    'addModuleFilter' => [
                         'url' => $url,
-                        'params' => array('action' => 'add_module_filter', 'form_key' => $form_key)
-                    ),
-                    'removeModuleFilter' => array(
+                        'params' => ['action' => 'add_module_filter', 'form_key' => $form_key]
+                    ],
+                    'removeModuleFilter' => [
                         'url' => $url,
-                        'params' => array('action' => 'remove_module_filter', 'form_key' => $form_key)
-                    )
-                ));
+                        'params' => ['action' => 'remove_module_filter', 'form_key' => $form_key]
+                    ]
+                ]];
                 break;
             default:
-                return array();
+                return [];
         }
     }
 

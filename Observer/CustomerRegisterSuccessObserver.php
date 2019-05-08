@@ -22,13 +22,13 @@ class CustomerRegisterSuccessObserver implements ObserverInterface
 
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
         $customer = $observer->getCustomer();
-        $this->_magesms->runHook('customer_new', new \BulkGate\Extensions\Hook\Variables(array(
+        $this->_magesms->runHook('customer_new', new \BulkGate\Extensions\Hook\Variables([
             'customer_id' => $customer->getId(),
             'customer_firstname' => $customer->getFirstname(),
             'customer_lastname' => $customer->getLastname(),
             'customer_password' => $request->getParam('password'),
             'customer_email' => $customer->getEmail(),
             'customer_phone' => $request->getParam('telephone'),
-        )), $observer );
+        ]), $observer );
     }
 }

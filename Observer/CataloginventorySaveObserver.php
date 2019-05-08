@@ -30,14 +30,14 @@ class CataloginventorySaveObserver implements ObserverInterface
                 return $this;
             if ($item->hasDataChanges()) {
                 if ($origData['qty'] > 0 && $item->getQty() <= 0) {
-                    $this->_magesms->runHook('product_out_of_stock', new \BulkGate\Extensions\Hook\Variables(array(
+                    $this->_magesms->runHook('product_out_of_stock', new \BulkGate\Extensions\Hook\Variables([
                         'product_id' => $item->getProductId(),
-                    )), $observer);
+                    ]), $observer);
                 }
                 if ($item->getNotifyStockQty() > $item->getQty() && $origData['qty'] >= $item->getNotifyStockQty()) {
-                    $this->_magesms->runHook('product_low_stock', new \BulkGate\Extensions\Hook\Variables(array(
+                    $this->_magesms->runHook('product_low_stock', new \BulkGate\Extensions\Hook\Variables([
                         'product_id' => $item->getProductId(),
-                    )), $observer);
+                    ]), $observer);
                 }
             }
         }

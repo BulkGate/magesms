@@ -27,12 +27,12 @@ class UpdateOrderStatusObserver implements ObserverInterface
         $order = $observer->getOrder();
 
         if ($order->getOrigData('status') != $order->getData('status')) {
-            $this->_magesms->runHook('order_status_change_'.$order->getData('status'), new \BulkGate\Extensions\Hook\Variables(array(
+            $this->_magesms->runHook('order_status_change_'.$order->getData('status'), new \BulkGate\Extensions\Hook\Variables([
                 'customer_id' => $order->getCustomerId(),
                 'customer_firstname' => $order->getCustomerFirstname(),
                 'customer_lastname' => $order->getCustomerLastname(),
                 'customer_email' => $order->getCustomerEmail(),
-            )), $observer );
+            ]), $observer );
         }
     }
 }

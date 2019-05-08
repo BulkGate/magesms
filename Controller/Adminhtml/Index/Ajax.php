@@ -29,22 +29,22 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 }
                 break;
             case 'register':
-                $proxy = $this->getDIContainer()->getProxy()->register(array_merge(array('name' => 'MageSMS'), $this->getRequest()->getParam('__bulkgate')));
-                if($proxy instanceof Response)
-                {
+                $proxy = $this->getDIContainer()->getProxy()->register(array_merge(['name' => 'MageSMS'],
+                    $this->getRequest()->getParam('__bulkgate')));
+                if ($proxy instanceof Response) {
                     $response->addData(get_object_vars($proxy));
                 } else {
-                    $response->addData(array('token' => $proxy, 'redirect' => $this->getUrl('*/dashboard/')));
+                    $response->addData(['token' => $proxy, 'redirect' => $this->getUrl('*/dashboard/')]);
                     $this->getMageHelper()->setActivate();
                 }
                 break;
             case 'login':
-                $proxy = $this->getDIContainer()->getProxy()->login(array_merge(array('name' => 'MageSMS'), $this->getRequest()->getParam('__bulkgate')));
-                if($proxy instanceof Response)
-                {
+                $proxy = $this->getDIContainer()->getProxy()->login(array_merge(['name' => 'MageSMS'],
+                    $this->getRequest()->getParam('__bulkgate')));
+                if ($proxy instanceof Response) {
                     $response->addData(get_object_vars($proxy));
                 } else {
-                    $response->addData(array('token' => $proxy, 'redirect' => $this->getUrl('*/dashboard/')));
+                    $response->addData(['token' => $proxy, 'redirect' => $this->getUrl('*/dashboard/')]);
                     $this->getMageHelper()->setActivate();
                 }
                 break;
@@ -58,7 +58,7 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
             case 'save_module_settings':
                 $post = $this->getRequest()->getParam('__bulkgate');
                 $proxy = $this->getDIContainer()->getProxy()->saveSettings($post);
-                $response->addData(array('redirect' => $this->getUrl('*/module_settings')));
+                $response->addData(['redirect' => $this->getUrl('*/module_settings')]);
                 break;
             case 'save_module_customers':
                 $post = $this->getRequest()->getParam('__bulkgate');
@@ -88,14 +88,14 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 $response->addData(get_object_vars($proxy));
                 break;
             case 'save_customer_notifications':
-                $post = $this->getRequest()->getParam('__bulkgate', array());
+                $post = $this->getRequest()->getParam('__bulkgate', []);
                 $proxy = $this->getDIContainer()->getProxy()->saveCustomerNotifications(
                     $post
                 );
                 $response->addData(get_object_vars($proxy));
                 break;
             case 'save_admin_notifications':
-                $post = $this->getRequest()->getParam('__bulkgate', array());
+                $post = $this->getRequest()->getParam('__bulkgate', []);
                 $proxy = $this->getDIContainer()->getProxy()->saveAdminNotifications(
                     $post
                 );
@@ -103,7 +103,7 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 break;
             case 'logout_module':
                 $proxy = $this->getDIContainer()->getProxy()->logout();
-                $response->addData(array('token' => 'guest', 'redirect' => $this->getUrl('*/sign/in')));
+                $response->addData(['token' => 'guest', 'redirect' => $this->getUrl('*/sign/in')]);
                 $this->getMageHelper()->setActivate(false);
                 break;
         }

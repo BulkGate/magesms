@@ -27,12 +27,12 @@ class UpdateOrderTrackingNumberObserver implements ObserverInterface
                 $this->_registry->unregister('magesms_track_obj');
             $this->_registry->register('magesms_track_obj', $track);
 
-            $this->_magesms->runHook('update_order_tracking_number', new \BulkGate\Extensions\Hook\Variables(array(
+            $this->_magesms->runHook('update_order_tracking_number', new \BulkGate\Extensions\Hook\Variables([
                 'customer_id' => $track->getShipment()->getCustomerId(),
                 'customer_firstname' => $track->getShipment()->getCustomerFirstname(),
                 'customer_lastname' => $track->getShipment()->getCustomerLastname(),
                 'customer_email' => $track->getShipment()->getCustomerEmail(),
-            )), $observer );
+            ]), $observer );
         }
     }
 }
