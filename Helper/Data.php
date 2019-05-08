@@ -25,5 +25,4 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $this->configWriter->save('magesms/nonactivated', true);
         }
     }
-
 }

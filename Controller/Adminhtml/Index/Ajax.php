@@ -114,5 +114,4 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
     {
         return $this->_authorization->isAllowed('BulkGate_Magesms::magesms');
     }
-
 }

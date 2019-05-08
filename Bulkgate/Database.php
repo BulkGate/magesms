@@ -67,5 +67,4 @@ class Database extends Strict implements IDatabase
     {
         return $this->sql;
     }
-
 }

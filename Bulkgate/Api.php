@@ -20,5 +20,4 @@ class Api extends \BulkGate\Extensions\Api\Api
 
         $this->sendResponse(new Response($customers->load($data->filter), true));
     }
-
 }

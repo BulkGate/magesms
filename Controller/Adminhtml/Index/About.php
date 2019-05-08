@@ -10,7 +10,6 @@ class About extends \BulkGate\Magesms\Controller\Adminhtml\Action
         $this->_addBreadcrumb(__('About'), __('About'));
         $resultPage->getConfig()->getTitle()->prepend(__('About'));
 
-
         $module = $this->getDIContainer()->getModule();
         $settings = $this->getDIContainer()->getSettings();
 
@@ -30,5 +29,4 @@ class About extends \BulkGate\Magesms\Controller\Adminhtml\Action
     {
         return $this->_authorization->isAllowed('BulkGate_Magesms::magesms_about');
     }
-
 }

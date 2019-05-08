@@ -47,7 +47,8 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
             $block->setPresenter(str_replace('_', '', ucwords($controllerName, '_')));
             $block->setAction($actionName);
             $block->setTitle($title);
-            $block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(), $block->getFormKey()));
+            $block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(),
+                $block->getFormKey()));
         }
         return $resultPage;
     }
@@ -56,6 +57,4 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
     {
         return $this->_authorization->isAllowed('BulkGate_Magesms::magesms');
     }
-
-
 }

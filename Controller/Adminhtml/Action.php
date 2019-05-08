@@ -37,8 +37,7 @@ abstract class Action extends \Magento\Backend\App\Action
         $settings = $this->getDIContainer()->getSettings();
         $application_token = $settings->load('static:application_token', false);
 
-        if (!$application_token && !in_array($request->getControllerName(), ['index', 'sign']))
-        {
+        if (!$application_token && !in_array($request->getControllerName(), ['index', 'sign'])) {
             $this->getMessageManager()->addSuccessMessage(__('Not registered yet? Create account now!'));
             return $this->_redirect('*/sign/in');
         }
@@ -59,12 +58,10 @@ abstract class Action extends \Magento\Backend\App\Action
         /** @var MageSMS $module */
         $module = $this->getDIContainer()->getModule();
         $now = $now || $module->statusLoad() || $module->languageLoad() || $module->storeLoad();
-        try
-        {
+        try {
             $this->getDIContainer()->getSynchronize()->run($module->getUrl('/module/settings/synchronize'), $now);
             return true;
-        } catch (InvalidResultException $e)
-        {
+        } catch (InvalidResultException $e) {
             return false;
         }
     }
@@ -164,5 +161,4 @@ abstract class Action extends \Magento\Backend\App\Action
         $this->_addBreadcrumb(__('MageSMS'), __('MageSMS'));
         return $this;
     }
-
 }

@@ -86,10 +86,13 @@ class Customers extends \BulkGate\Extensions\Customers
                             $value[1] = strtoupper($value[1]);
                         }
                         $collection->addNameToSelect()
-                            ->joinAttribute('billing_country_id', 'customer_address/country_id', 'default_billing', null, 'left')
-                            ->joinAttribute('shipping_country_id', 'customer_address/country_id', 'default_shipping', null, 'left');
+                            ->joinAttribute('billing_country_id', 'customer_address/country_id',
+                                'default_billing', null, 'left')
+                            ->joinAttribute('shipping_country_id', 'customer_address/country_id',
+                                'default_shipping', null, 'left');
                         $collection->getSelect()
-                            ->columns('IFNULL(`at_shipping_country_id`.`country_id`, `at_billing_country_id`.`country_id`) AS country_id');
+                            ->columns('IFNULL(`at_shipping_country_id`.`country_id`, 
+                                `at_billing_country_id`.`country_id`) AS country_id');
 
                         $collection->getSelect()->having($this->getSql($filter, 'country_id'));
                         foreach ($collection as $item) {
@@ -135,7 +138,7 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'newsletter':
-                        if ($filter['values'][0][1] == 'no') {
+                        if ($filter['values'][0][1] === 'no') {
                             $cond = 'ns.`subscriber_status` = 0 OR ns.`subscriber_status` IS NULL';
                         } else {
                             $cond = 'ns.`subscriber_status` = 1';
@@ -189,7 +192,8 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'type':
-                        $collection->joinAttribute('billing_vat_id', 'customer_address/vat_id', 'default_billing', null, 'left')
+                        $collection->joinAttribute('billing_vat_id', 'customer_address/vat_id',
+                            'default_billing', null, 'left')
                             ->addFieldToFilter('billing_vat_id', $this->getCondition($filter));
                         foreach ($collection as $item) {
                             $customers[] = $item->getId();
@@ -259,13 +263,17 @@ class Customers extends \BulkGate\Extensions\Customers
 
         if ($attr->getId()) {
             $collection->getSelect()
-                ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, IF(`at_shipping_telephone`.`telephone`, `at_shipping_telephone`.`telephone`, `at_mobile`.`value` )) AS telephone');
+                ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, 
+                    IF(`at_shipping_telephone`.`telephone`, `at_shipping_telephone`.`telephone`, 
+                    `at_mobile`.`value` )) AS telephone');
         } else {
             $collection->getSelect()
-                ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, `at_shipping_telephone`.`telephone`) AS telephone');
+                ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, 
+                    `at_shipping_telephone`.`telephone`) AS telephone');
         }
         $collection->getSelect()
-            ->columns('IF(`at_shipping_country_id`.`country_id`, `at_shipping_country_id`.`country_id`, `at_billing_country_id`.`country_id`) AS country_id');
+            ->columns('IF(`at_shipping_country_id`.`country_id`, `at_shipping_country_id`.`country_id`, 
+                `at_billing_country_id`.`country_id`) AS country_id');
 
         if ($customers) {
             $collection->addFieldToFilter('entity_id', ['in' => $customers]);
@@ -277,6 +285,4 @@ class Customers extends \BulkGate\Extensions\Customers
 
         return $this->cache = $collection;
     }
-
-
 }

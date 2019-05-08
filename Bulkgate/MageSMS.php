@@ -122,7 +122,8 @@ class MageSMS extends Strict implements IModule
     public function info($key = null)
     {
         if (empty($this->plugin_data)) {
-            $module = $this->objectManager->get(\Magento\Framework\Module\ModuleList::class)->getOne('BulkGate_Magesms');
+            $module = $this->objectManager->get(\Magento\Framework\Module\ModuleList::class)
+                ->getOne('BulkGate_Magesms');
             $this->plugin_data = array_merge(
                 [
                     'version' => $module['setup_version'],
@@ -166,15 +167,11 @@ class MageSMS extends Strict implements IModule
 
         $variables->set('store_id', $storeId);
 
-        try
-        {
-            $hook->run((string) $name, $variables);
+        try {
+            $hook->run((string)$name, $variables);
             return true;
-        }
-        catch (\BulkGate\Extensions\IO\InvalidResultException $e)
-        {
+        } catch (\BulkGate\Extensions\IO\InvalidResultException $e) {
             return false;
         }
     }
-
 }

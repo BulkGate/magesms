@@ -1,7 +1,8 @@
 <?php
 namespace BulkGate\Magesms\Bulkgate;
 
-use BulkGate, BulkGate\Extensions;
+use BulkGate;
+use BulkGate\Extensions;
 
 class DIContainer extends Extensions\DIContainer
 {
@@ -19,5 +20,4 @@ class DIContainer extends Extensions\DIContainer
     {
         return new Customers($this->getService('database'));
     }
-
 }

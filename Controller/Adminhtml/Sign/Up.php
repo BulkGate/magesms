@@ -22,7 +22,8 @@ class Up extends \BulkGate\Magesms\Controller\Adminhtml\Action
             $block->setPresenter('Sign');
             $block->setAction('up');
             $block->setTitle($resultPage->getConfig()->getTitle()->get());
-            $block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(), $block->getFormKey()));
+            $block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(),
+                $block->getFormKey()));
         }
         return $resultPage;
     }
@@ -31,5 +32,4 @@ class Up extends \BulkGate\Magesms\Controller\Adminhtml\Action
     {
         return $this->_authorization->isAllowed('BulkGate_Magesms::magesms_sign_up');
     }
-
 }

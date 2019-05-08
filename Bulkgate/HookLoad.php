@@ -176,27 +176,31 @@ class HookLoad extends Strict implements ILoad
         $variables->set('order_date6', $parse['month'].'/'.$parse['day'].'/'.$parse['year']);
         $variables->set('order_date7', $parse['month'].'-'.$parse['day'].'-'.$parse['year']);
         $variables->set('order_time', $parse['hour'].':'.sprintf('%02.0f', $parse['minute']));
-        $variables->set('order_time1', $parse['hour'].':'.sprintf('%02.0f', $parse['minute']).':'.sprintf('%02.0f', $parse['second']));
+        $variables->set('order_time1', $parse['hour'].':'.sprintf('%02.0f', $parse['minute'])
+            .':'.sprintf('%02.0f', $parse['second']));
     }
 
     public function product(Variables $variables)
     {
-        if (!$this->observer)
+        if (!$this->observer) {
             return;
+        }
 
         /** @var \Magento\CatalogInventory\Model\Stock\Item $item */
         if ($this->observer->getItem() instanceof \Magento\CatalogInventory\Api\Data\StockItemInterface)
             $item = $this->observer->getItem();
 
-        if (empty($item))
+        if (empty($item)) {
             return;
+        }
 
         $variables->set('product_quantity', $item->getQty());
 
         /** @var \Magento\Catalog\Model\Product $product */
         $product = $this->registry->registry('product');
-        if (empty($product))
+        if (empty($product)) {
             return;
+        }
         $variables->set('product_sku', $product->getSku());
         $variables->set('product_name', $product->getName());
     }
@@ -208,10 +212,11 @@ class HookLoad extends Strict implements ILoad
         if ($shop_name) {
             $variables->set('shop_name', $shop_name);
         } else {
-            if ($variables->get('store_id'))
+            if ($variables->get('store_id')) {
                 $variables->set('shop_name', $this->storeManager->getStore($variables->get('store_id'))->getName());
-            else
+            } else {
                 $variables->set('shop_name', $this->storeManager->getStore()->getName());
+            }
         }
         $variables->set('shop_email', $this->getConfig('trans_email/ident_general/email', $variables->get('store_id')));
         $variables->set('shop_phone', $this->getConfig('general/store_information/phone', $variables->get('store_id')));

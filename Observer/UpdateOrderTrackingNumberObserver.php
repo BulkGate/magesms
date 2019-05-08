@@ -22,7 +22,8 @@ class UpdateOrderTrackingNumberObserver implements ObserverInterface
         /** @var \Magento\Sales\Model\Order\Shipment\Track $track */
         $track = $observer->getTrack();
 
-        if ($track->hasDataChanges() && ($track->getCreatedAt() == $track->getUpdatedAt() || $track->dataHasChangedFor('track_number'))) {
+        if ($track->hasDataChanges() &&
+            ($track->getCreatedAt() == $track->getUpdatedAt() || $track->dataHasChangedFor('track_number'))) {
             if ($this->_registry->registry('magesms_track_obj'))
                 $this->_registry->unregister('magesms_track_obj');
             $this->_registry->register('magesms_track_obj', $track);

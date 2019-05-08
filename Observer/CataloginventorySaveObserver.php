@@ -26,8 +26,9 @@ class CataloginventorySaveObserver implements ObserverInterface
             if (!($origData = $this->_registry->registry('magesms_stock_item_' . $item->getProductId()))) {
                 $origData = $item->getOrigData();
             }
-            if (!$origData)
+            if (!$origData) {
                 return $this;
+            }
             if ($item->hasDataChanges()) {
                 if ($origData['qty'] > 0 && $item->getQty() <= 0) {
                     $this->_magesms->runHook('product_out_of_stock', new \BulkGate\Extensions\Hook\Variables([
