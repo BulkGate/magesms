@@ -29,8 +29,12 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 }
                 break;
             case 'register':
-                $proxy = $this->getDIContainer()->getProxy()->register(array_merge(['name' => 'MageSMS'],
-                    $this->getRequest()->getParam('__bulkgate')));
+                $proxy = $this->getDIContainer()->getProxy()->register(
+                    array_merge(
+                        ['name' => 'MageSMS'],
+                        $this->getRequest()->getParam('__bulkgate')
+                    )
+                );
                 if ($proxy instanceof Response) {
                     $response->addData(get_object_vars($proxy));
                 } else {
@@ -39,8 +43,12 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 }
                 break;
             case 'login':
-                $proxy = $this->getDIContainer()->getProxy()->login(array_merge(['name' => 'MageSMS'],
-                    $this->getRequest()->getParam('__bulkgate')));
+                $proxy = $this->getDIContainer()->getProxy()->login(
+                    array_merge(
+                        ['name' => 'MageSMS'],
+                        $this->getRequest()->getParam('__bulkgate')
+                    )
+                );
                 if ($proxy instanceof Response) {
                     $response->addData(get_object_vars($proxy));
                 } else {
@@ -51,7 +59,8 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
             case 'load_module_data':
                 $post = $this->getRequest()->getParam('__bulkgate');
                 $proxy = $this->getDIContainer()->getProxy()->loadCustomersCount(
-                    $post['application_id'], $post['campaign_id']
+                    $post['application_id'],
+                    $post['campaign_id']
                 );
                 $response->addData(get_object_vars($proxy));
                 break;
@@ -63,7 +72,8 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
             case 'save_module_customers':
                 $post = $this->getRequest()->getParam('__bulkgate');
                 $proxy = $this->getDIContainer()->getProxy()->saveModuleCustomers(
-                    $post['application_id'], $post['campaign_id']
+                    $post['application_id'],
+                    $post['campaign_id']
                 );
                 $response->addData(get_object_vars($proxy));
                 break;

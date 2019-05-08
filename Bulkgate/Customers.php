@@ -86,10 +86,19 @@ class Customers extends \BulkGate\Extensions\Customers
                             $value[1] = strtoupper($value[1]);
                         }
                         $collection->addNameToSelect()
-                            ->joinAttribute('billing_country_id', 'customer_address/country_id',
-                                'default_billing', null, 'left')
-                            ->joinAttribute('shipping_country_id', 'customer_address/country_id',
-                                'default_shipping', null, 'left');
+                            ->joinAttribute(
+                                'billing_country_id',
+                                'customer_address/country_id',
+                                'default_billing',
+                                null,
+                                'left'
+                            )->joinAttribute(
+                                'shipping_country_id',
+                                'customer_address/country_id',
+                                'default_shipping',
+                                null,
+                                'left'
+                            );
                         $collection->getSelect()
                             ->columns('IFNULL(`at_shipping_country_id`.`country_id`, 
                                 `at_billing_country_id`.`country_id`) AS country_id');
@@ -119,7 +128,8 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         $sql = $resource->getConnection()
                             ->prepareSqlCondition(
-                                'soi.sku', $this->getCondition($filter)
+                                'soi.sku',
+                                $this->getCondition($filter)
                             );
                         $collection->getSelect()
                             ->join(
@@ -160,7 +170,8 @@ class Customers extends \BulkGate\Extensions\Customers
                             $collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
                         $sql = $resource->getConnection()
                             ->prepareSqlCondition(
-                                'orders_sum', $this->getCondition($filter)
+                                'orders_sum',
+                                $this->getCondition($filter)
                             );
                         $collection->getSelect()
                             ->columns('SUM('.$collection->getTable('sales_order_grid').'.`grand_total`) AS orders_sum')
@@ -181,7 +192,8 @@ class Customers extends \BulkGate\Extensions\Customers
                             $collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
                         $sql = $resource->getConnection()
                             ->prepareSqlCondition(
-                                'created_at_sale', $this->getCondition($filter)
+                                'created_at_sale',
+                                $this->getCondition($filter)
                             );
                         $collection->getSelect()
                             ->columns($collection->getTable('sales_order_grid').'.created_at AS created_at_sale')
@@ -192,9 +204,13 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'type':
-                        $collection->joinAttribute('billing_vat_id', 'customer_address/vat_id',
-                            'default_billing', null, 'left')
-                            ->addFieldToFilter('billing_vat_id', $this->getCondition($filter));
+                        $collection->joinAttribute(
+                            'billing_vat_id',
+                            'customer_address/vat_id',
+                            'default_billing',
+                            null,
+                            'left'
+                        )->addFieldToFilter('billing_vat_id', $this->getCondition($filter));
                         foreach ($collection as $item) {
                             $customers[] = $item->getId();
                         }
@@ -202,7 +218,6 @@ class Customers extends \BulkGate\Extensions\Customers
                 }
             }
             $filtered = true;
-
         }
 
         if (!$customers) {
@@ -225,7 +240,8 @@ class Customers extends \BulkGate\Extensions\Customers
         return $this->getCustomerCollection($customers)->count();
     }
 
-    protected function getCustomerCollection(array $customers = []) {
+    protected function getCustomerCollection(array $customers = [])
+    {
         if ($this->cache && $this->customers === $customers) {
             return $this->cache;
         }

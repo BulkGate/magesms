@@ -1,6 +1,6 @@
 .admin__menu .item-magesms.level-0 > a::before {
-	content: ' ';
-	background: url('../images/menu_icon3.svg') top center no-repeat;
-	height: 24px;
-	/*width: 22px;*/
+    content: ' ';
+    background: url('../images/menu_icon3.svg') top center no-repeat;
+    height: 24px;
+    /*width: 22px;*/
 }

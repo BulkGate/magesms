@@ -35,7 +35,6 @@ class NewOrderObserver implements ObserverInterface
             'customer_firstname' => $order->getCustomerFirstname(),
             'customer_lastname' => $order->getCustomerLastname(),
             'customer_email' => $order->getCustomerEmail(),
-        ]), $observer );
-
+        ]), $observer);
     }
 }

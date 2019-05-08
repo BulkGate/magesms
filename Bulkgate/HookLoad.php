@@ -112,12 +112,30 @@ class HookLoad extends Strict implements ILoad
         $variables->set('order_id', $order->getIncrementId());
         $variables->set('order_payment', $order->getPayment()->getMethodInstance()->getTitle());
 
-        $variables->set('order_total_paid', $this->currency->format($order->getGrandTotal(),
-            ['display' => \Zend_Currency::NO_SYMBOL], false));
-        $variables->set('order_subtotal', $this->currency->format($order->getSubtotal(),
-            ['display' => \Zend_Currency::NO_SYMBOL], false));
-        $variables->set('order_shipping_amount', $this->currency->format($order->getShippingAmount(),
-            ['display' => \Zend_Currency::NO_SYMBOL], false));
+        $variables->set(
+            'order_total_paid',
+            $this->currency->format(
+                $order->getGrandTotal(),
+                ['display' => \Zend_Currency::NO_SYMBOL],
+                false
+            )
+        );
+        $variables->set(
+            'order_subtotal',
+            $this->currency->format(
+                $order->getSubtotal(),
+                ['display' => \Zend_Currency::NO_SYMBOL],
+                false
+            )
+        );
+        $variables->set(
+            'order_shipping_amount',
+            $this->currency->format(
+                $order->getShippingAmount(),
+                ['display' => \Zend_Currency::NO_SYMBOL],
+                false
+            )
+        );
         $variables->set('order_currency', $order->getOrderCurrency()->getCurrencyCode());
 
         $this->formatDateTime($variables, $order->getCreatedAt());
@@ -147,10 +165,12 @@ class HookLoad extends Strict implements ILoad
             $params = $this->request->getParams();
             if (!empty($params['tracking'])) {
                 $tracking = end($params['tracking']);
-                if (!empty($tracking['title']))
+                if (!empty($tracking['title'])) {
                     $track->setTitle($tracking['title']);
-                if (!empty($tracking['number']))
+                }
+                if (!empty($tracking['number'])) {
                     $track->setTrackNumber($tracking['number']);
+                }
             }
         }
         if (!empty($track)) {
@@ -161,10 +181,10 @@ class HookLoad extends Strict implements ILoad
         $admin = $this->sessionBackend->getUser();
         $variables->set('employee_id', $admin->getId());
         $variables->set('employee_email', $admin->getEmail());
-
     }
 
-    private function formatDateTime(Variables $variables, $date) {
+    private function formatDateTime(Variables $variables, $date)
+    {
         $variables->set('order_date', $date);
         $parse = date_parse($date);
 
@@ -187,8 +207,9 @@ class HookLoad extends Strict implements ILoad
         }
 
         /** @var \Magento\CatalogInventory\Model\Stock\Item $item */
-        if ($this->observer->getItem() instanceof \Magento\CatalogInventory\Api\Data\StockItemInterface)
+        if ($this->observer->getItem() instanceof \Magento\CatalogInventory\Api\Data\StockItemInterface) {
             $item = $this->observer->getItem();
+        }
 
         if (empty($item)) {
             return;

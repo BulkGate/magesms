@@ -19,5 +19,4 @@ class Menu extends \Magento\Backend\Block\Menu
 //        return '';
         return parent::renderNavigation($menu, $level, $limit, $colBrakes);
     }
-
 }

@@ -16,7 +16,7 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
         $resultPage = $this->_resultPageFactory->create();
         $controllerName = $this->getRequest()->getControllerName();
         $actionName = $this->getRequest()->getActionName();
-        if ($actionName == 'index') {
+        if ($actionName === 'index') {
             $actionName = 'default';
         }
         $resultPage->setActiveMenu('BulkGate_Magesms::magesms');
@@ -40,14 +40,19 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 $title = $title->getTitle();
             } else {
                 $title = $menu->getChildren()->get('BulkGate_Magesms::magesms_'.$controllerName)->getTitle();
-
             }
             $block->setModule($module);
             $block->setSettings($settings);
             $block->setPresenter(str_replace('_', '', ucwords($controllerName, '_')));
             $block->setAction($actionName);
             $block->setTitle($title);
-            $block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(), $block->getFormKey()));
+            $block->setProxyLinks(
+                $this->getProxyLinks(
+                    $block->getPresenter(),
+                    $block->getAction(),
+                    $block->getFormKey()
+                )
+            );
         }
         return $resultPage;
     }

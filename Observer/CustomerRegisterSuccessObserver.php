@@ -29,6 +29,6 @@ class CustomerRegisterSuccessObserver implements ObserverInterface
             'customer_password' => $request->getParam('password'),
             'customer_email' => $customer->getEmail(),
             'customer_phone' => $request->getParam('telephone'),
-        ]), $observer );
+        ]), $observer);
     }
 }

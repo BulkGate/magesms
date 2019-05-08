@@ -20,9 +20,14 @@ abstract class Action extends \Magento\Backend\App\Action
     protected $dIContainer;
     protected $_mageHelper;
 
-    public function __construct(Context $context, PageFactory $resultPageFactory, Registry $registry,
-                                DIContainer $dIContainer, JsonFactory $resultJsonFactory, Data $data)
-    {
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory,
+        Registry $registry,
+        DIContainer $dIContainer,
+        JsonFactory $resultJsonFactory,
+        Data $data
+    ) {
         parent::__construct($context);
         $this->_resultPageFactory = $resultPageFactory;
         $this->_coreRegistry = $registry;

@@ -48,8 +48,11 @@ class MageSMS extends Strict implements IModule
         }
         //$actual = (array) wc_get_order_statuses();
         if ($status_list !== $actual) {
-            $this->settings->set(':order_status_list', \BulkGate\Extensions\Json::encode($actual),
-                ['type' => 'json']);
+            $this->settings->set(
+                ':order_status_list',
+                \BulkGate\Extensions\Json::encode($actual),
+                ['type' => 'json']
+            );
             return true;
         }
         return false;
@@ -76,21 +79,27 @@ class MageSMS extends Strict implements IModule
                     continue;
                 }
                 foreach ($locales as $locale) {
-                    if ($locale['value'] == $lang_iso) {
+                    if ($locale['value'] === $lang_iso) {
                         $actual[$lang_iso] = $locale['label'];
                         break;
                     }
                 }
             }
             if ($languages !== $actual) {
-                $this->settings->set(':languages', \BulkGate\Extensions\Json::encode($actual),
-                    ['type' => 'json']);
+                $this->settings->set(
+                    ':languages',
+                    \BulkGate\Extensions\Json::encode($actual),
+                    ['type' => 'json']
+                );
                 return true;
             }
             return false;
         } else {
-            $this->settings->set(':languages', \BulkGate\Extensions\Json::encode(['default' => 'Default']),
-                ['type' => 'json']);
+            $this->settings->set(
+                ':languages',
+                \BulkGate\Extensions\Json::encode(['default' => 'Default']),
+                ['type' => 'json']
+            );
             return true;
         }
     }

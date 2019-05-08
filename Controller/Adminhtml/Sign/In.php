@@ -22,7 +22,13 @@ class In extends \BulkGate\Magesms\Controller\Adminhtml\Action
             $block->setPresenter('ModuleSign');
             $block->setAction('in');
             $block->setTitle($resultPage->getConfig()->getTitle()->get());
-            $block->setProxyLinks($this->getProxyLinks($block->getPresenter(), $block->getAction(), $block->getFormKey()));
+            $block->setProxyLinks(
+                $this->getProxyLinks(
+                    $block->getPresenter(),
+                    $block->getAction(),
+                    $block->getFormKey()
+                )
+            );
         }
         return $resultPage;
     }
