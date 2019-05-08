@@ -9,63 +9,63 @@ use PDO;
 
 class Database extends Strict implements IDatabase
 {
-	private $db;
-	private $sql = array();
+    private $db;
+    private $sql = array();
 
-	public function __construct()
-	{
-		$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-		/** @var \Magento\Framework\App\ResourceConnection $resource */
-		$resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
-		/** @var \Magento\Framework\DB\Adapter\Pdo\Mysql $db */
-		$db = $resource->getConnection();
-		$this->db = $db;
-	}
+    public function __construct()
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        /** @var \Magento\Framework\App\ResourceConnection $resource */
+        $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
+        /** @var \Magento\Framework\DB\Adapter\Pdo\Mysql $db */
+        $db = $resource->getConnection();
+        $this->db = $db;
+    }
 
-	public function execute($sql)
-	{
-		$output = array();
-		$this->sql[] = $sql;
-		$result = $this->db->query($sql);
-		if ($result && $result->rowCount()) {
-			try {
-				$output = $result->fetchAll(PDO::FETCH_OBJ);
-			} catch (\Exception $e) {
-				$output = array();
-			}
-		}
-		return new Result($output);
-	}
+    public function execute($sql)
+    {
+        $output = array();
+        $this->sql[] = $sql;
+        $result = $this->db->query($sql);
+        if ($result && $result->rowCount()) {
+            try {
+                $output = $result->fetchAll(PDO::FETCH_OBJ);
+            } catch (\Exception $e) {
+                $output = array();
+            }
+        }
+        return new Result($output);
+    }
 
-	public function prepare($sql, array $params = array())
-	{
-		$params = array_map(array($this->db, 'quote'), $params);
-		return vsprintf($sql, $params);
-	}
+    public function prepare($sql, array $params = array())
+    {
+        $params = array_map(array($this->db, 'quote'), $params);
+        return vsprintf($sql, $params);
+    }
 
-	public function lastId()
-	{
-		return $this->db->lastInsertId();
-	}
+    public function lastId()
+    {
+        return $this->db->lastInsertId();
+    }
 
-	public function escape($string)
-	{
-		return addslashes($string);
-	}
+    public function escape($string)
+    {
+        return addslashes($string);
+    }
 
-	public function prefix()
-	{
-		return '';
-	}
+    public function prefix()
+    {
+        return '';
+    }
 
-	public function table($table)
-	{
-		return $this->db->getTableName($table);
-	}
+    public function table($table)
+    {
+        return $this->db->getTableName($table);
+    }
 
-	public function getSqlList()
-	{
-		return $this->sql;
-	}
+    public function getSqlList()
+    {
+        return $this->sql;
+    }
 
 }

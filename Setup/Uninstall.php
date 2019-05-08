@@ -8,20 +8,20 @@ use BulkGate\Magesms\Bulkgate\DIContainer;
 
 class Uninstall implements UninstallInterface
 {
-	private $dIContainer;
+    private $dIContainer;
 
-	public function __construct(DIContainer $DIContainer)
-	{
-		$this->dIContainer = $DIContainer;
-	}
+    public function __construct(DIContainer $DIContainer)
+    {
+        $this->dIContainer = $DIContainer;
+    }
 
-	public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context)
-	{
-		$setup->startSetup();
+    public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $setup->startSetup();
 
-		$this->dIContainer->getSettings()->uninstall();
+        $this->dIContainer->getSettings()->uninstall();
 
-		$setup->endSetup();
-	}
+        $setup->endSetup();
+    }
 
 }

@@ -15,7 +15,7 @@
  */
 require_once(__DIR__.'/extensions/src/_extension.php');
 \Magento\Framework\Component\ComponentRegistrar::register(
-	\Magento\Framework\Component\ComponentRegistrar::MODULE,
-	'BulkGate_Magesms',
-	__DIR__
+    \Magento\Framework\Component\ComponentRegistrar::MODULE,
+    'BulkGate_Magesms',
+    __DIR__
 );

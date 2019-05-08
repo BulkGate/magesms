@@ -7,18 +7,18 @@ use BulkGate\Extensions\Api\Response;
 
 class Api extends \BulkGate\Extensions\Api\Api
 {
-	public function actionCampaignCustomerCount(IRequest $data)
-	{
-		$customers = new Customers($this->database);
+    public function actionCampaignCustomerCount(IRequest $data)
+    {
+        $customers = new Customers($this->database);
 
-		$this->sendResponse(new Response($customers->loadCount($data->filter), true));
-	}
+        $this->sendResponse(new Response($customers->loadCount($data->filter), true));
+    }
 
-	public function actionCampaignCustomer(IRequest $data)
-	{
-		$customers = new Customers($this->database);
+    public function actionCampaignCustomer(IRequest $data)
+    {
+        $customers = new Customers($this->database);
 
-		$this->sendResponse(new Response($customers->load($data->filter), true));
-	}
+        $this->sendResponse(new Response($customers->load($data->filter), true));
+    }
 
 }
