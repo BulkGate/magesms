@@ -10,7 +10,7 @@ use PDO;
 class Database extends Strict implements IDatabase
 {
     private $db;
-    private $sql = array();
+    private $sql = [];
 
     public function __construct()
     {
@@ -24,22 +24,22 @@ class Database extends Strict implements IDatabase
 
     public function execute($sql)
     {
-        $output = array();
+        $output = [];
         $this->sql[] = $sql;
         $result = $this->db->query($sql);
         if ($result && $result->rowCount()) {
             try {
                 $output = $result->fetchAll(PDO::FETCH_OBJ);
             } catch (\Exception $e) {
-                $output = array();
+                $output = [];
             }
         }
         return new Result($output);
     }
 
-    public function prepare($sql, array $params = array())
+    public function prepare($sql, array $params = [])
     {
-        $params = array_map(array($this->db, 'quote'), $params);
+        $params = array_map([$this->db, 'quote'], $params);
         return vsprintf($sql, $params);
     }
 

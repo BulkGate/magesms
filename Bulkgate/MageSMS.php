@@ -10,7 +10,7 @@ use Magento\Framework\Event\Observer as EventObserver;
 class MageSMS extends Strict implements IModule
 {
     const PRODUCT = 'ms';
-    private $info = array(
+    private $info = [
         'store' => 'Magento',
         'store_version' => '2.1.x - 2.x.x',
         'name' => 'MageSMS',
@@ -18,12 +18,12 @@ class MageSMS extends Strict implements IModule
         'developer' => 'TOPefekt s.r.o.',
         'developer_url' => 'http://www.topefekt.com/',
         'description' => 'MageSMS is a comprehensive and powerful module that enables you to send SMSs to your customers or administrators during various events in your WooCommerce store. Improve customer service & notify customers via SMS to establish greater levels of trust. Deepen the relationship with your customers and build a stronger customer loyalty with the help of SMS marketing. Loyal customers tend to buy more & more regularly. And they will frequently recommend your e-shop to others. More customers = higher sales...! Give administrators the advantage of immediate access to information via SMS messages, whether they are at a computer or not. With Woo SMS module you can send SMSs worldwide. The price of the SMS depends on the recipient country, selected sender type and the payment amount. Our prices are among the lowest in the market.',
-    );
+    ];
 
     /** @var Settings */
     public $settings;
     /** @var array */
-    private $plugin_data = array();
+    private $plugin_data = [];
     public $objectManager;
 
     public function __construct(Settings $settings)
@@ -42,13 +42,14 @@ class MageSMS extends Strict implements IModule
         /** @var \Magento\Sales\Model\ResourceModel\Order\Status\Collection $statuses */
         $statuses = $this->objectManager->create(\Magento\Sales\Model\ResourceModel\Order\Status\Collection::class);
         $status_list = (array)$this->settings->load(':order_status_list', null);
-        $actual = array();
+        $actual = [];
         foreach ($statuses->toOptionArray() as $status) {
             $actual[$status['value']] = $status['label'];
         }
         //$actual = (array) wc_get_order_statuses();
         if ($status_list !== $actual) {
-            $this->settings->set(':order_status_list', \BulkGate\Extensions\Json::encode($actual), array('type' => 'json'));
+            $this->settings->set(':order_status_list', \BulkGate\Extensions\Json::encode($actual),
+                ['type' => 'json']);
             return true;
         }
         return false;
@@ -63,7 +64,7 @@ class MageSMS extends Strict implements IModule
             $translates = $this->objectManager->get(\Magento\Framework\Locale\TranslatedLists::class);
             $locales = $translates->getOptionLocales();
 
-            $actual = array();
+            $actual = [];
 
             /** @var \Magento\Store\Model\StoreManagerInterface $storeManager */
             $storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
@@ -82,12 +83,14 @@ class MageSMS extends Strict implements IModule
                 }
             }
             if ($languages !== $actual) {
-                $this->settings->set(':languages', \BulkGate\Extensions\Json::encode($actual), array('type' => 'json'));
+                $this->settings->set(':languages', \BulkGate\Extensions\Json::encode($actual),
+                    ['type' => 'json']);
                 return true;
             }
             return false;
         } else {
-            $this->settings->set(':languages', \BulkGate\Extensions\Json::encode(array('default' => 'Default')), array('type' => 'json'));
+            $this->settings->set(':languages', \BulkGate\Extensions\Json::encode(['default' => 'Default']),
+                ['type' => 'json']);
             return true;
         }
     }
@@ -98,9 +101,9 @@ class MageSMS extends Strict implements IModule
         /** @var \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig */
         $scopeConfig = $this->objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
         $storeName = $scopeConfig->getValue('general/store_information/name');
-        $actual = array(0 => ($storeName ? $storeName : 'MageSMS Store'));
+        $actual = [0 => $storeName ?: 'MageSMS Store'];
         if ($stores !== $actual) {
-            $this->settings->set(':stores', \BulkGate\Extensions\Json::encode($actual), array('type' => 'json'));
+            $this->settings->set(':stores', \BulkGate\Extensions\Json::encode($actual), ['type' => 'json']);
             return true;
         }
         return false;
@@ -121,13 +124,13 @@ class MageSMS extends Strict implements IModule
         if (empty($this->plugin_data)) {
             $module = $this->objectManager->get(\Magento\Framework\Module\ModuleList::class)->getOne('BulkGate_Magesms');
             $this->plugin_data = array_merge(
-                array(
+                [
                     'version' => $module['setup_version'],
                     'application_id' => $this->settings->load('static:application_id', -1),
                     'application_product' => $this->product(),
                     'delete_db' => $this->settings->load('main:delete_db', 0),
                     'language_mutation' => $this->settings->load('main:language_mutation', 0)
-                ),
+                ],
                 $this->info
             );
         }
@@ -151,14 +154,15 @@ class MageSMS extends Strict implements IModule
         );
 
         $storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
-        if (is_callable(array($observer, 'getStoreId')))
+        if (is_callable([$observer, 'getStoreId'])) {
             $storeId = $observer->getStoreId();
-        elseif (is_callable(array($observer, 'getStore')))
+        } elseif (is_callable([$observer, 'getStore'])) {
             $storeId = $observer->getStore()->getId();
-        elseif ($storeManager->getStore())
+        } elseif ($storeManager->getStore()) {
             $storeId = $storeManager->getStore()->getStoreId();
-        else
+        } else {
             $storeId = null;
+        }
 
         $variables->set('store_id', $storeId);
 

@@ -1,14 +1,13 @@
 <?php
 namespace BulkGate\Magesms\Bulkgate;
 
-
 use BulkGate\Extensions\Database\IDatabase;
 
 class Customers extends \BulkGate\Extensions\Customers
 {
     /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $cache */
     private $cache;
-    private $customers = array();
+    private $customers = [];
 
     public function __construct(IDatabase $db)
     {
@@ -25,50 +24,33 @@ class Customers extends \BulkGate\Extensions\Customers
 
     private function getCondition($filter)
     {
-        $cond = array();
+        $cond = [];
         foreach ($filter['values'] as $value) {
-            if (in_array($filter['type'], array('enum', 'string', 'float'), true)) {
-                if($value[0] === 'prefix')
-                {
-                    $cond[] = array('like' => '%'.$value[1].'%');
-                }
-                elseif($value[0] === 'sufix')
-                {
-                    $cond[] = array('like' => '%'.$value[1]);
-                }
-                elseif($value[0] === 'substring')
-                {
-                    $cond[] = array('like' => '%'.$value[1].'%');
-                }
-                elseif($value[0] === 'empty')
-                {
-                    $cond[] = array('eq' => $value[1]);
-                }
-                elseif($value[0] === 'filled')
-                {
-                    $cond[] = array('neq' => $value[1]);
-                }
-                elseif($value[0] === 'is')
-                {
-                    $cond[] = array('eq' => $value[1]);
-                }
-                elseif($value[0] === 'not')
-                {
-                    $cond[] = array('neq' => $value[1]);
-                }
-                elseif($value[0] === 'gt')
-                {
-                    $cond[] = array('gt' => $value[1]);
-                }
-                elseif($value[0] === 'lt')
-                {
-                    $cond[] = array('lt' => $value[1]);
+            if (in_array($filter['type'], ['enum', 'string', 'float'], true)) {
+                if ($value[0] === 'prefix') {
+                    $cond[] = ['like' => '%' . $value[1] . '%'];
+                } elseif ($value[0] === 'sufix') {
+                    $cond[] = ['like' => '%' . $value[1]];
+                } elseif ($value[0] === 'substring') {
+                    $cond[] = ['like' => '%' . $value[1] . '%'];
+                } elseif ($value[0] === 'empty') {
+                    $cond[] = ['eq' => $value[1]];
+                } elseif ($value[0] === 'filled') {
+                    $cond[] = ['neq' => $value[1]];
+                } elseif ($value[0] === 'is') {
+                    $cond[] = ['eq' => $value[1]];
+                } elseif ($value[0] === 'not') {
+                    $cond[] = ['neq' => $value[1]];
+                } elseif ($value[0] === 'gt') {
+                    $cond[] = ['gt' => $value[1]];
+                } elseif ($value[0] === 'lt') {
+                    $cond[] = ['lt' => $value[1]];
                 }
             } elseif ($filter['type'] === "date-range") {
-                $cond[] = array(
+                $cond[] = [
                     'from' => date('Y-m-d H:i:s', strtotime($value[1])),
                     'to' => date('Y-m-d H:i:s', strtotime($value[2]))
-                );
+                ];
             }
         }
         return $cond;
@@ -79,7 +61,7 @@ class Customers extends \BulkGate\Extensions\Customers
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         /** @var \Magento\Framework\App\ResourceConnection $resource */
         $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
-        $customers = array();
+        $customers = [];
         $filtered = false;
         foreach ($filters as $key => $filter) {
             if (isset($filter['values']) && count($filter['values']) > 0 && !$this->empty) {
@@ -239,7 +221,7 @@ class Customers extends \BulkGate\Extensions\Customers
         return $this->getCustomerCollection($customers)->count();
     }
 
-    protected function getCustomerCollection(array $customers = array()) {
+    protected function getCustomerCollection(array $customers = []) {
         if ($this->cache && $this->customers === $customers) {
             return $this->cache;
         }
@@ -253,39 +235,40 @@ class Customers extends \BulkGate\Extensions\Customers
             ->joinAttribute('billing_city', 'customer_address/city', 'default_billing', null, 'left')
             ->joinAttribute('billing_country_id', 'customer_address/country_id', 'default_billing', null, 'left')
             ->joinAttribute('shipping_country_id', 'customer_address/country_id', 'default_shipping', null, 'left');
-        $filter = array(
-            array(
+        $filter = [
+            [
                 'attribute' => 'billing_telephone',
-                array(array('notnull' => true), array('neq' => ''))
-            ),
-            array(
+                [['notnull' => true], ['neq' => '']]
+            ],
+            [
                 'attribute' => 'shipping_telephone',
-                array(array('notnull' => true), array('neq' => ''))
-            )
-        );
+                [['notnull' => true], ['neq' => '']]
+            ]
+        ];
         /** @var \Magento\Catalog\Model\ResourceModel\Eav\Attribute $attrObj */
         $attrObj = $objectManager->get(\Magento\Catalog\Model\ResourceModel\Eav\Attribute::class);
         $attr = $attrObj->loadByCode('customer', 'mobile');
         if ($attr->getId()) {
             $collection->joinAttribute('customer_mobile', 'customer/mobile', 'mobile', null, 'left');
-            $filter[] = array(
+            $filter[] = [
                 'attribute' => 'mobile',
-                array(array('notnull' => true), array('neq' => ''))
-            );
+                [['notnull' => true], ['neq' => '']]
+            ];
         }
         $collection->addFieldToFilter($filter);
 
-        if ($attr->getId())
+        if ($attr->getId()) {
             $collection->getSelect()
                 ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, IF(`at_shipping_telephone`.`telephone`, `at_shipping_telephone`.`telephone`, `at_mobile`.`value` )) AS telephone');
-        else
+        } else {
             $collection->getSelect()
                 ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, `at_shipping_telephone`.`telephone`) AS telephone');
+        }
         $collection->getSelect()
             ->columns('IF(`at_shipping_country_id`.`country_id`, `at_shipping_country_id`.`country_id`, `at_billing_country_id`.`country_id`) AS country_id');
 
         if ($customers) {
-            $collection->addFieldToFilter('entity_id', array('in' => $customers));
+            $collection->addFieldToFilter('entity_id', ['in' => $customers]);
         }
         $collection->getSelect()
             ->columns('e.firstname AS first_name');

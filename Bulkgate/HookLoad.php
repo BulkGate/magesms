@@ -8,7 +8,6 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 
-
 class HookLoad extends Strict implements ILoad
 {
     /**
@@ -55,7 +54,6 @@ class HookLoad extends Strict implements ILoad
         $this->sessionBackend = $objectManager->get(\Magento\Backend\Model\Auth\Session::class);
         $this->registry = $objectManager->get(\Magento\Framework\Registry::class);
         $this->request = $objectManager->get(\Magento\Framework\App\RequestInterface::class);
-
     }
 
     public function load(Variables $variables)
@@ -67,8 +65,9 @@ class HookLoad extends Strict implements ILoad
 
     public function order(Variables $variables)
     {
-        if (!$this->observer)
+        if (!$this->observer) {
             return;
+        }
 
         /** @var \Magento\Sales\Model\Order $order */
         if ($this->observer->getOrder() instanceof \Magento\Sales\Api\Data\OrderInterface) {
@@ -76,12 +75,14 @@ class HookLoad extends Strict implements ILoad
         } elseif ($this->observer->getTrack() instanceof \Magento\Sales\Api\Data\TrackInterface) {
             $order = $this->observer->getTrack()->getShipment()->getOrder();
         }
-        if (empty($order))
+        if (empty($order)) {
             return;
+        }
 
         $shipping = $order->getShippingAddress();
-        if (empty($shipping))
+        if (empty($shipping)) {
             $shipping = $order->getBillingAddress();
+        }
         $variables->set('customer_shipping_firstname', $shipping->getFirstname());
         $variables->set('customer_shipping_lastname', $shipping->getLastname());
         $variables->set('customer_company', $shipping->getCompany());
@@ -94,8 +95,9 @@ class HookLoad extends Strict implements ILoad
         $variables->set('customer_vat_number', $shipping->getVatId());
 
         $billing = $order->getBillingAddress();
-        if (empty($billing))
+        if (empty($billing)) {
             $billing = $order->getShippingAddress();
+        }
         $variables->set('customer_invoice_company', $billing->getCompany());
         $variables->set('customer_invoice_firstname', $billing->getFirstname());
         $variables->set('customer_invoice_lastname', $billing->getLastname());
@@ -111,11 +113,11 @@ class HookLoad extends Strict implements ILoad
         $variables->set('order_payment', $order->getPayment()->getMethodInstance()->getTitle());
 
         $variables->set('order_total_paid', $this->currency->format($order->getGrandTotal(),
-            array('display' => \Zend_Currency::NO_SYMBOL), false));
+            ['display' => \Zend_Currency::NO_SYMBOL], false));
         $variables->set('order_subtotal', $this->currency->format($order->getSubtotal(),
-            array('display' => \Zend_Currency::NO_SYMBOL), false));
+            ['display' => \Zend_Currency::NO_SYMBOL], false));
         $variables->set('order_shipping_amount', $this->currency->format($order->getShippingAmount(),
-            array('display' => \Zend_Currency::NO_SYMBOL), false));
+            ['display' => \Zend_Currency::NO_SYMBOL], false));
         $variables->set('order_currency', $order->getOrderCurrency()->getCurrencyCode());
 
         $this->formatDateTime($variables, $order->getCreatedAt());
@@ -123,10 +125,11 @@ class HookLoad extends Strict implements ILoad
         $variables->set('cart_id', $order->getQuoteId());
 
         $products = $order->getAllItems();
-        $arr = array(1 => array(), 2 => array(),3 => array(), 4 => array(), 5 => array());
-        foreach($products as $product) {
+        $arr = [1 => [], 2 => [],3 => [], 4 => [], 5 => []];
+        foreach ($products as $product) {
             $arr[1][] = $product->getProductId().'/'.$product->getName().'/'.$product->getQtyOrdered();
-            $arr[2][] = 'id:'.$product->getProductId().', '.__('name').':'.$product->getName().', '.__('qty').':'.$product->getQtyOrdered();
+            $arr[2][] = 'id:'.$product->getProductId().', '.__('name').':'.$product->getName().', '.__('qty')
+                .':'.$product->getQtyOrdered();
             $arr[3][] = $product->getProductId().'/'.$product->getQtyOrdered();
             $arr[4][] = 'id:'.$product->getProductId().', '.__('qty').':'.$product->getQtyOrdered();
             $arr[5][] = $product->getProductId().'/'.$product->getSku().'/'.$product->getQtyOrdered();
