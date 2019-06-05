@@ -2,6 +2,7 @@
 
 namespace BulkGate\Magesms\Helper;
 
+use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\Context;
 
@@ -9,10 +10,13 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     protected $configWriter;
 
-    public function __construct(Context $context, WriterInterface $configWriter)
+    protected $cacheTypeList;
+
+    public function __construct(Context $context, WriterInterface $configWriter, TypeListInterface $cacheTypeList)
     {
         parent::__construct($context);
         $this->configWriter = $configWriter;
+        $this->cacheTypeList = $cacheTypeList;
     }
 
     public function setActivate($enable = true)
@@ -24,5 +28,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $this->configWriter->save('magesms/activated', false);
             $this->configWriter->save('magesms/nonactivated', true);
         }
+
+        $this->cacheTypeList->cleanType('config');
+        $this->cacheTypeList->cleanType('layout');
+        $this->cacheTypeList->cleanType('block_html');
     }
 }

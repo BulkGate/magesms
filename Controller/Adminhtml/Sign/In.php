@@ -30,6 +30,7 @@ class In extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 )
             );
         }
+
         return $resultPage;
     }
 

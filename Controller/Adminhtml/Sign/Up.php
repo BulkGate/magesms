@@ -30,6 +30,7 @@ class Up extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 )
             );
         }
+
         return $resultPage;
     }
 
