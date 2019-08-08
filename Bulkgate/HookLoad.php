@@ -89,7 +89,7 @@ class HookLoad extends Strict implements ILoad
         $variables->set('customer_address', $shipping->getStreetLine(1));
         $variables->set('customer_postcode', $shipping->getPostcode());
         $variables->set('customer_city', $shipping->getCity());
-        $variables->set('customer_country', $shipping->getCountry());
+        $variables->set('customer_country', $shipping->getCountryId());
         $variables->set('customer_state', $shipping->getRegion());
         $variables->set('customer_phone', $shipping->getTelephone());
         $variables->set('customer_vat_number', $shipping->getVatId());
@@ -178,9 +178,10 @@ class HookLoad extends Strict implements ILoad
             $variables->set('order_shipping_number', $track->getTrackNumber());
         }
 
-        $admin = $this->sessionBackend->getUser();
-        $variables->set('employee_id', $admin->getId());
-        $variables->set('employee_email', $admin->getEmail());
+        if ($admin = $this->sessionBackend->getUser()) {
+            $variables->set('employee_id', $admin->getId());
+            $variables->set('employee_email', $admin->getEmail());
+        }
     }
 
     private function formatDateTime(Variables $variables, $date)

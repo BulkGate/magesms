@@ -46,9 +46,6 @@ abstract class Action extends \Magento\Backend\App\Action
             $this->getMessageManager()->addSuccessMessage(__('Not registered yet? Create account now!'));
             return $this->_redirect('*/sign/in');
         }
-//        print_r($this->getRequest()->getParams());
-//        echo get_class($this->getRequest());
-//        echo "action-";
 
         return parent::dispatch($request);
     }
@@ -80,25 +77,25 @@ abstract class Action extends \Magento\Backend\App\Action
                     'url' => $url,
                     'params' => ['action' => 'save_customer_notifications', 'form_key' => $form_key]
                 ]]];
-                break;
+
             case 'ModuleNotifications:admin':
                 return ['_generic' => ['save' => [
                     'url' => $url,
                     'params' => ['action' => 'save_admin_notifications', 'form_key' => $form_key]
                 ]]];
-                break;
+
             case 'Sign:up':
                 return ['_generic' => ['register' => [
                     'url' => $url,
                     'params' => ['action' => 'register', 'form_key' => $form_key]
                 ]]];
-                break;
+
             case 'ModuleSign:in':
                 return ['_generic' => ['login' => [
                     'url' => $url,
                     'params' => ['action' => 'login', 'form_key' => $form_key]
                 ]]];
-                break;
+
             case 'ModuleSettings:default':
                 return ['_generic' => [
                     'save' => [
@@ -109,7 +106,7 @@ abstract class Action extends \Magento\Backend\App\Action
                         'url' => $url,
                         'params' => ['action' => 'logout_module', 'form_key' => $form_key]
                     ]]];
-                break;
+
             case 'SmsCampaign:campaign':
                 return ['campaign' => [
                     'loadModuleData' => [
@@ -129,7 +126,7 @@ abstract class Action extends \Magento\Backend\App\Action
                         'params' => ['action' => 'remove_module_filter', 'form_key' => $form_key]
                     ]
                 ]];
-                break;
+
             default:
                 return [];
         }
