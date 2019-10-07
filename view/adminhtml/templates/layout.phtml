@@ -2,6 +2,7 @@
 /** @var $block \Magento\Backend\Block\Template */
 
 use BulkGate\Extensions\Escape;
+use BulkGate\Extensions;
 
 if (!($module = $block->getModule()))
 	return;
@@ -73,7 +74,7 @@ $params = $block->getParams();
 			_bg_client.require(<?php echo Escape::js($settings->load('static:application_id', '')); ?>, {
 				product: 'ms',
 				language: <?php echo Escape::js($settings->load('main:language', 'en')); ?>,
-				salt: "<?php echo $block->getFormKey(); ?>",
+				salt: "<?php echo Extensions\Compress::compress($block->getSalt()); ?>",
 				view : {
 					presenter: <?php echo Escape::js($block->getPresenter()) ?>,
 					action: <?php echo Escape::js($block->getAction()) ?>,

@@ -3,6 +3,7 @@
 namespace BulkGate\Magesms\Controller\Adminhtml;
 
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\Menu\Config;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
@@ -12,6 +13,10 @@ use BulkGate\Extensions\IO\InvalidResultException;
 use BulkGate\Magesms\Bulkgate\MageSMS;
 use BulkGate\Magesms\Helper\Data;
 
+/**
+ * Class Action
+ * @package BulkGate\Magesms\Controller\Adminhtml
+ */
 abstract class Action extends \Magento\Backend\App\Action
 {
     protected $_resultPageFactory;
@@ -26,7 +31,8 @@ abstract class Action extends \Magento\Backend\App\Action
         Registry $registry,
         DIContainer $dIContainer,
         JsonFactory $resultJsonFactory,
-        Data $data
+        Data $data,
+        Config $menuConfig
     ) {
         parent::__construct($context);
         $this->_resultPageFactory = $resultPageFactory;
@@ -34,6 +40,7 @@ abstract class Action extends \Magento\Backend\App\Action
         $this->_resultJsonFactory = $resultJsonFactory;
         $this->dIContainer = $dIContainer;
         $this->_mageHelper = $data;
+        $this->_menuConfig = $menuConfig;
     }
 
     public function dispatch(RequestInterface $request)
@@ -150,6 +157,28 @@ abstract class Action extends \Magento\Backend\App\Action
     public function getMageHelper()
     {
         return $this->_mageHelper;
+    }
+
+    public function getObjectManager()
+    {
+        return $this->_objectManager;
+    }
+
+    protected function generateTokens()
+    {
+        $output = [];
+        /** @var $menu \Magento\Backend\Model\Menu\Config */
+        $menu = $this->getObjectManager()->get(\Magento\Backend\Model\Menu\Config::class)->getMenu()
+            ->get('BulkGate_Magesms::magesms');
+        foreach ($menu->getChildren() as $item) {
+            if ($item->getAction()) {
+                $output[$item->getAction()] = $this->getUrl($item->getAction());
+            }
+        }
+        $output['magesms/sms_campaign/active'] = $this->getUrl('magesms/sms_campaign/active');
+        $output['magesms/sms_campaign/campaign'] = $this->getUrl('magesms/sms_campaign/campaign');
+        $output['magesms/wallet/detail'] = $this->getUrl('magesms/wallet/detail');
+        return $output;
     }
 
     protected function _isAllowed()

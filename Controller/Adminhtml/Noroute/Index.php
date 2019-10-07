@@ -30,16 +30,16 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
             if ($actionName !== 'default') {
                 $titleSource .= '_'.$actionName;
             }
-            $object = \Magento\Framework\App\ObjectManager::getInstance();
-            /** @var $menu \Magento\Backend\Model\Menu */
-            $menu = $object->get(\Magento\Backend\Model\Menu\Config::class)->getMenu()
+            /** @var $menu \Magento\Backend\Model\Menu\Config */
+            $menu = $this->getObjectManager()->get(\Magento\Backend\Model\Menu\Config::class)->getMenu()
                 ->get('BulkGate_Magesms::magesms');
             $title = $menu->getChildren()
                 ->get($titleSource);
             if ($title) {
                 $title = $title->getTitle();
             } else {
-                $title = $menu->getChildren()->get('BulkGate_Magesms::magesms_'.$controllerName)->getTitle();
+                $title = $menu->getChildren()->get('BulkGate_Magesms::magesms_'.$controllerName);
+                $title = $title ? $title->getTitle() : $controllerName;
             }
             $block->setModule($module);
             $block->setSettings($settings);
@@ -53,7 +53,9 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
                     $block->getFormKey()
                 )
             );
+            $block->setSalt($this->generateTokens());
         }
+
         return $resultPage;
     }
 

@@ -46,7 +46,6 @@ class MageSMS extends Strict implements IModule
         foreach ($statuses->toOptionArray() as $status) {
             $actual[$status['value']] = $status['label'];
         }
-        //$actual = (array) wc_get_order_statuses();
         if ($status_list !== $actual) {
             $this->settings->set(
                 ':order_status_list',
@@ -67,7 +66,7 @@ class MageSMS extends Strict implements IModule
             $translates = $this->objectManager->get(\Magento\Framework\Locale\TranslatedLists::class);
             $locales = $translates->getOptionLocales();
 
-            $actual = [];
+            $langs = [];
 
             /** @var \Magento\Store\Model\StoreManagerInterface $storeManager */
             $storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
@@ -78,17 +77,13 @@ class MageSMS extends Strict implements IModule
                 if (isset($langs[$lang_iso])) {
                     continue;
                 }
-                foreach ($locales as $locale) {
-                    if ($locale['value'] === $lang_iso) {
-                        $actual[$lang_iso] = $locale['label'];
-                        break;
-                    }
-                }
+                $key = array_search($lang_iso, array_column($locales, 'value'), true);
+                $langs[$lang_iso] = $locales[$key]['label'];
             }
-            if ($languages !== $actual) {
+            if ($languages !== $langs) {
                 $this->settings->set(
                     ':languages',
-                    \BulkGate\Extensions\Json::encode($actual),
+                    \BulkGate\Extensions\Json::encode($langs),
                     ['type' => 'json']
                 );
                 return true;
@@ -106,11 +101,14 @@ class MageSMS extends Strict implements IModule
 
     public function storeLoad()
     {
+        $actual = [];
         $stores = (array)$this->settings->load(':stores', null);
-        /** @var \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig */
-        $scopeConfig = $this->objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
-        $storeName = $scopeConfig->getValue('general/store_information/name');
-        $actual = [0 => $storeName ?: 'MageSMS Store'];
+        /** @var \Magento\Store\Model\StoreManagerInterface $storeManager */
+        $storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+        /** @var \Magento\Store\Model\Store\Interceptor $store */
+        foreach ($storeManager->getStores() as $id => $store) {
+            $actual[$id] = $store->getGroup()->getName().' - '. $store->getName();
+        }
         if ($stores !== $actual) {
             $this->settings->set(':stores', \BulkGate\Extensions\Json::encode($actual), ['type' => 'json']);
             return true;
