@@ -1,9 +1,14 @@
 <?php
 namespace BulkGate\Magesms\Observer;
 
+use BulkGate\Magesms\Extensions;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 
+/**
+ * Class CustomerRegisterSuccessObserver
+ * @package BulkGate\Magesms\Observer
+ */
 class CustomerRegisterSuccessObserver implements ObserverInterface
 {
     protected $_magesms;
@@ -22,7 +27,7 @@ class CustomerRegisterSuccessObserver implements ObserverInterface
 
         /** @var \Magento\Customer\Api\Data\CustomerInterface $customer */
         $customer = $observer->getCustomer();
-        $this->_magesms->runHook('customer_new', new \BulkGate\Extensions\Hook\Variables([
+        $this->_magesms->runHook('customer_new', new Extensions\Hook\Variables([
             'customer_id' => $customer->getId(),
             'customer_firstname' => $customer->getFirstname(),
             'customer_lastname' => $customer->getLastname(),

@@ -1,6 +1,10 @@
 <?php
 namespace BulkGate\Magesms\Controller\Adminhtml\Index;
 
+/**
+ * Class About
+ * @package BulkGate\Magesms\Controller\Adminhtml\Index
+ */
 class About extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
     public function execute()

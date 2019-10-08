@@ -2,6 +2,10 @@
 
 namespace BulkGate\Magesms\Controller\Adminhtml;
 
+/**
+ * Class Router
+ * @package BulkGate\Magesms\Controller\Adminhtml
+ */
 class Router extends \Magento\Backend\App\Router
 {
     protected function matchAction(\Magento\Framework\App\RequestInterface $request, array $params)

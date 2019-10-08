@@ -2,15 +2,12 @@
 
 namespace BulkGate\Magesms\Controller\Adminhtml\Noroute;
 
-use Magento\Framework\App\RequestInterface;
-
+/**
+ * Class Index
+ * @package BulkGate\Magesms\Controller\Adminhtml\Noroute
+ */
 class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
-    public function dispatch(RequestInterface $request)
-    {
-        return parent::dispatch($request);
-    }
-
     public function execute()
     {
         $resultPage = $this->_resultPageFactory->create();

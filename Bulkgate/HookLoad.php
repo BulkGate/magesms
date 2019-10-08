@@ -1,14 +1,16 @@
 <?php
 namespace BulkGate\Magesms\Bulkgate;
 
-use BulkGate\Extensions\Hook\ILoad;
-use BulkGate\Extensions\Hook\Variables;
-use BulkGate\Extensions\Strict;
+use BulkGate\Magesms\Extensions;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 
-class HookLoad extends Strict implements ILoad
+/**
+ * Class HookLoadInterface
+ * @package BulkGate\Magesms\Bulkgate
+ */
+class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterface
 {
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -56,14 +58,14 @@ class HookLoad extends Strict implements ILoad
         $this->request = $objectManager->get(\Magento\Framework\App\RequestInterface::class);
     }
 
-    public function load(Variables $variables)
+    public function load(Extensions\Hook\Variables $variables)
     {
         $this->order($variables);
         $this->product($variables);
         $this->shop($variables);
     }
 
-    public function order(Variables $variables)
+    public function order(Extensions\Hook\Variables $variables)
     {
         if (!$this->observer) {
             return;
@@ -184,7 +186,7 @@ class HookLoad extends Strict implements ILoad
         }
     }
 
-    private function formatDateTime(Variables $variables, $date)
+    private function formatDateTime(Extensions\Hook\Variables $variables, $date)
     {
         $variables->set('order_date', $date);
         $parse = date_parse($date);
@@ -201,7 +203,7 @@ class HookLoad extends Strict implements ILoad
             .':'.sprintf('%02.0f', $parse['second']));
     }
 
-    public function product(Variables $variables)
+    public function product(Extensions\Hook\Variables $variables)
     {
         if (!$this->observer) {
             return;
@@ -227,7 +229,7 @@ class HookLoad extends Strict implements ILoad
         $variables->set('product_name', $product->getName());
     }
 
-    public function shop(Variables $variables)
+    public function shop(Extensions\Hook\Variables $variables)
     {
         $variables->set('shop_domain', $this->getConfig('web/unsecure/base_url', $variables->get('store_id')));
         $shop_name = $this->getConfig('general/store_information/name', $variables->get('store_id'));

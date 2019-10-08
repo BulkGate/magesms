@@ -13,7 +13,7 @@
  * @copyright   Copyright (c) 2012-2019 TOPefekt s.r.o. (http://www.mage-sms.com)
  * @license     http://opensource.org/licenses/BSD-3-Clause
  */
-require_once(__DIR__.'/extensions/src/_extension.php');
+
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
     'BulkGate_Magesms',

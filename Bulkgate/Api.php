@@ -1,23 +1,25 @@
 <?php
-
 namespace BulkGate\Magesms\Bulkgate;
 
-use BulkGate\Extensions\Api\IRequest;
-use BulkGate\Extensions\Api\Response;
+use BulkGate\Magesms\Extensions;
 
-class Api extends \BulkGate\Extensions\Api\Api
+/**
+ * Class Api
+ * @package BulkGate\Magesms\Bulkgate
+ */
+class Api extends Extensions\Api\Api
 {
-    public function actionCampaignCustomerCount(IRequest $data)
+    public function actionCampaignCustomerCount(Extensions\Api\RequestInterface $data)
     {
         $customers = new Customers($this->database);
 
-        $this->sendResponse(new Response($customers->loadCount($data->filter), true));
+        $this->sendResponse(new Extensions\Api\Response($customers->loadCount($data->filter), true));
     }
 
-    public function actionCampaignCustomer(IRequest $data)
+    public function actionCampaignCustomer(Extensions\Api\RequestInterface $data)
     {
         $customers = new Customers($this->database);
 
-        $this->sendResponse(new Response($customers->load($data->filter), true));
+        $this->sendResponse(new Extensions\Api\Response($customers->load($data->filter), true));
     }
 }

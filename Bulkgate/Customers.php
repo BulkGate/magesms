@@ -1,15 +1,19 @@
 <?php
 namespace BulkGate\Magesms\Bulkgate;
 
-use BulkGate\Extensions\Database\IDatabase;
+use BulkGate\Magesms\Extensions;
 
-class Customers extends \BulkGate\Extensions\Customers
+/**
+ * Class Customers
+ * @package BulkGate\Magesms\Bulkgate
+ */
+class Customers extends Extensions\Customers
 {
     /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $cache */
     private $cache;
     private $customers = [];
 
-    public function __construct(IDatabase $db)
+    public function __construct(Extensions\Database\DatabaseInterface $db)
     {
         parent::__construct($db);
         $this->table_user_key = 'entity_id';
@@ -166,8 +170,9 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'all_orders_amount':
-                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false)
+                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false) {
                             $collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
+                        }
                         $sql = $resource->getConnection()
                             ->prepareSqlCondition(
                                 'orders_sum',
@@ -188,8 +193,9 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'order_date':
-                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false)
+                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false) {
                             $collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
+                        }
                         $sql = $resource->getConnection()
                             ->prepareSqlCondition(
                                 'created_at_sale',
@@ -223,7 +229,7 @@ class Customers extends \BulkGate\Extensions\Customers
         if (!$customers) {
             $this->empty = true;
         }
-        return array(array_unique($customers), $filtered);
+        return [array_unique($customers), $filtered];
     }
 
     protected function getTotal()
@@ -233,10 +239,6 @@ class Customers extends \BulkGate\Extensions\Customers
 
     protected function getFilteredTotal(array $customers)
     {
-//        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
-//        $collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
-//        return $collection->addFieldToFilter('entity_id', array('in' => $customers))->count();
         return $this->getCustomerCollection($customers)->count();
     }
 

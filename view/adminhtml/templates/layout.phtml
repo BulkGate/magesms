@@ -1,8 +1,7 @@
 <?php
 /** @var $block \Magento\Backend\Block\Template */
 
-use BulkGate\Extensions\Escape;
-use BulkGate\Extensions;
+use BulkGate\Magesms\Extensions;
 
 if (!($module = $block->getModule()))
 	return;
@@ -15,8 +14,8 @@ $params = $block->getParams();
 		<div class="container-fluid">
 			<div class="nav-wrapper">
 				<div id="brand-logo">
-					<a class="brand-logo hide-on-med-and-down" href="<?php echo Escape::url($block->getUrl('*/dashboard')); ?>">
-						<img alt="magesms" width="120" src="<?php echo Escape::url($module->getUrl('/images/products/ms.svg')); ?>" />
+					<a class="brand-logo hide-on-med-and-down" href="<?php echo Extensions\Escape::url($block->getUrl('*/dashboard')); ?>">
+						<img alt="magesms" width="120" src="<?php echo Extensions\Escape::url($module->getUrl('/images/products/ms.svg')); ?>" />
 					</a>
 				</div>
 				<ul class="controls">
@@ -25,7 +24,7 @@ $params = $block->getParams();
 				</ul>
 				<div class="nav-h1">
 					<span class="h1-divider"></span>
-					<h1 class="truncate"><?php echo Escape::html($block->getTitle()) ?><span id="react-app-h1-sub"></span></h1>
+					<h1 class="truncate"><?php echo Extensions\Escape::html($block->getTitle()) ?><span id="react-app-h1-sub"></span></h1>
 				</div>
 			</div>
 		</div>
@@ -36,7 +35,7 @@ $params = $block->getParams();
 		<div id="react-app-root">
 			<div class="loader loading">
 				<div class="spinner"></div>
-				<p><?php echo Escape::html(__('Loading content')); ?></p>
+				<p><?php echo Extensions\Escape::html(__('Loading content')); ?></p>
 			</div>
 		</div>
 		<div id="react-language-footer"></div>
@@ -58,34 +57,34 @@ $params = $block->getParams();
 				}
 			};
 		</script>
-		<script src="<?php echo Escape::url($module->getUrl('/'.(defined('BULKGATE_DEV_MODE') ? 'dev' : 'dist').'/widget-api/widget-api.js')); ?>"></script>
+		<script src="<?php echo Extensions\Escape::url($module->getUrl('/'.(defined('BULKGATE_DEV_MODE') ? 'dev' : 'dist').'/widget-api/widget-api.js')); ?>"></script>
 		<script type="application/javascript">
 			_bg_client.registerMiddleware(function (data)
 			{
 				if(data.init._generic)
 				{
-					data.init.env.homepage.logo_link = "<?php echo Escape::url($module->getUrl('/images/products/ms.png')); ?>";
-					data.init._generic.scope.module_info = <?php echo Escape::js($module->info()); ?>;
+					data.init.env.homepage.logo_link = "<?php echo Extensions\Escape::url($module->getUrl('/images/products/ms.png')); ?>";
+					data.init._generic.scope.module_info = <?php echo Extensions\Escape::js($module->info()); ?>;
 				}
 			});
 
 			var input = _bg_client.parseQuery(location.search);
 
-			_bg_client.require(<?php echo Escape::js($settings->load('static:application_id', '')); ?>, {
+			_bg_client.require(<?php echo Extensions\Escape::js($settings->load('static:application_id', '')); ?>, {
 				product: 'ms',
-				language: <?php echo Escape::js($settings->load('main:language', 'en')); ?>,
+				language: <?php echo Extensions\Escape::js($settings->load('main:language', 'en')); ?>,
 				salt: "<?php echo Extensions\Compress::compress($block->getSalt()); ?>",
 				view : {
-					presenter: <?php echo Escape::js($block->getPresenter()) ?>,
-					action: <?php echo Escape::js($block->getAction()) ?>,
+					presenter: <?php echo Extensions\Escape::js($block->getPresenter()) ?>,
+					action: <?php echo Extensions\Escape::js($block->getAction()) ?>,
 				},
 				params: {
-					id: <?php if(isset($params['id'])): echo Escape::js($params['id']); else: ?>input["id"]<?php  endif; ?>,
-					key: <?php if(isset($params['key'])): echo Escape::js($params['key']); else: ?>input["key"]<?php  endif; ?>,
-					type: <?php if(isset($params['type'])): echo Escape::js($params['type']); else: ?>input["type"]<?php  endif; ?>,
-					profile_id: <?php if(isset($params['profile_id'])): echo Escape::js($params['profile_id']); else: ?>input["profile_id"]<?php  endif; ?>
+					id: <?php if(isset($params['id'])): echo Extensions\Escape::js($params['id']); else: ?>input["id"]<?php  endif; ?>,
+					key: <?php if(isset($params['key'])): echo Extensions\Escape::js($params['key']); else: ?>input["key"]<?php  endif; ?>,
+					type: <?php if(isset($params['type'])): echo Extensions\Escape::js($params['type']); else: ?>input["type"]<?php  endif; ?>,
+					profile_id: <?php if(isset($params['profile_id'])): echo Extensions\Escape::js($params['profile_id']); else: ?>input["profile_id"]<?php  endif; ?>
 				},
-				proxy: <?php echo Escape::js($block->getProxyLinks()); ?>
+				proxy: <?php echo Extensions\Escape::js($block->getProxyLinks()); ?>
 			});
 		</script>
 	</div>

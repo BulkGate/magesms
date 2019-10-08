@@ -1,9 +1,14 @@
 <?php
 namespace BulkGate\Magesms\Observer;
 
+use BulkGate\Magesms\Extensions;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 
+/**
+ * Class NewOrderObserver
+ * @package BulkGate\Magesms\Observer
+ */
 class NewOrderObserver implements ObserverInterface
 {
     protected $_magesms;
@@ -30,7 +35,7 @@ class NewOrderObserver implements ObserverInterface
             return $this;
         }
 
-        $this->_magesms->runHook('order_new', new \BulkGate\Extensions\Hook\Variables([
+        $this->_magesms->runHook('order_new', new Extensions\Hook\Variables([
             'customer_id' => $order->getCustomerId(),
             'customer_firstname' => $order->getCustomerFirstname(),
             'customer_lastname' => $order->getCustomerLastname(),

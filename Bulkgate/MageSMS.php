@@ -2,12 +2,14 @@
 
 namespace BulkGate\Magesms\Bulkgate;
 
-use BulkGate\Extensions\IModule;
-use BulkGate\Extensions\Settings;
-use BulkGate\Extensions\Strict;
+use BulkGate\Magesms\Extensions;
 use Magento\Framework\Event\Observer as EventObserver;
 
-class MageSMS extends Strict implements IModule
+/**
+ * Class MageSMS
+ * @package BulkGate\Magesms\Bulkgate
+ */
+class MageSMS extends Extensions\Strict implements Extensions\ModuleInterface
 {
     const PRODUCT = 'ms';
     private $info = [
@@ -17,16 +19,24 @@ class MageSMS extends Strict implements IModule
         'url' => 'http://www.mage-sms.com',
         'developer' => 'TOPefekt s.r.o.',
         'developer_url' => 'http://www.topefekt.com/',
-        'description' => 'MageSMS is a comprehensive and powerful module that enables you to send SMSs to your customers or administrators during various events in your WooCommerce store. Improve customer service & notify customers via SMS to establish greater levels of trust. Deepen the relationship with your customers and build a stronger customer loyalty with the help of SMS marketing. Loyal customers tend to buy more & more regularly. And they will frequently recommend your e-shop to others. More customers = higher sales...! Give administrators the advantage of immediate access to information via SMS messages, whether they are at a computer or not. With Woo SMS module you can send SMSs worldwide. The price of the SMS depends on the recipient country, selected sender type and the payment amount. Our prices are among the lowest in the market.',
+        'description' => 'MageSMS is a comprehensive and powerful module that enables you to send SMSs to your '.
+            'customers or administrators during various events in your WooCommerce store. Improve customer service '.
+            '& notify customers via SMS to establish greater levels of trust. Deepen the relationship with your '.
+            'customers and build a stronger customer loyalty with the help of SMS marketing. Loyal customers tend '.
+            'to buy more & more regularly. And they will frequently recommend your e-shop to others.'.
+            ' More customers = higher sales...! Give administrators the advantage of immediate access to information '.
+            'via SMS messages, whether they are at a computer or not. With Woo SMS module you can send SMSs worldwide.'.
+            ' The price of the SMS depends on the recipient country, selected sender type and the payment amount.'.
+            ' Our prices are among the lowest in the market.',
     ];
 
-    /** @var Settings */
+    /** @var Extensions\Settings */
     public $settings;
     /** @var array */
     private $plugin_data = [];
     public $objectManager;
 
-    public function __construct(Settings $settings)
+    public function __construct(Extensions\Settings $settings)
     {
         $this->settings = $settings;
         $this->objectManager = \Magento\Framework\App\ObjectManager::getInstance();
@@ -49,7 +59,7 @@ class MageSMS extends Strict implements IModule
         if ($status_list !== $actual) {
             $this->settings->set(
                 ':order_status_list',
-                \BulkGate\Extensions\Json::encode($actual),
+                Extensions\Json::encode($actual),
                 ['type' => 'json']
             );
             return true;
@@ -83,7 +93,7 @@ class MageSMS extends Strict implements IModule
             if ($languages !== $langs) {
                 $this->settings->set(
                     ':languages',
-                    \BulkGate\Extensions\Json::encode($langs),
+                    Extensions\Json::encode($langs),
                     ['type' => 'json']
                 );
                 return true;
@@ -92,7 +102,7 @@ class MageSMS extends Strict implements IModule
         } else {
             $this->settings->set(
                 ':languages',
-                \BulkGate\Extensions\Json::encode(['default' => 'Default']),
+                Extensions\Json::encode(['default' => 'Default']),
                 ['type' => 'json']
             );
             return true;
@@ -110,7 +120,7 @@ class MageSMS extends Strict implements IModule
             $actual[$id] = $store->getGroup()->getName().' - '. $store->getName();
         }
         if ($stores !== $actual) {
-            $this->settings->set(':stores', \BulkGate\Extensions\Json::encode($actual), ['type' => 'json']);
+            $this->settings->set(':stores', Extensions\Json::encode($actual), ['type' => 'json']);
             return true;
         }
         return false;
@@ -148,11 +158,11 @@ class MageSMS extends Strict implements IModule
         return isset($this->plugin_data[$key]) ? $this->plugin_data[$key] : null;
     }
 
-    public function runHook($name, \BulkGate\Extensions\Hook\Variables $variables, EventObserver $observer)
+    public function runHook($name, Extensions\Hook\Variables $variables, EventObserver $observer)
     {
         /** @var DIContainer $di */
         $di = $this->objectManager->get(DIContainer::class);
-        $hook = new \BulkGate\Extensions\Hook\Hook(
+        $hook = new Extensions\Hook\Hook(
             $di->getModule()->getUrl('/module/hook'),
             $variables->get('lang_id'),
             $variables->get('store_id'),
@@ -177,7 +187,7 @@ class MageSMS extends Strict implements IModule
         try {
             $hook->run((string)$name, $variables);
             return true;
-        } catch (\BulkGate\Extensions\IO\InvalidResultException $e) {
+        } catch (Extensions\IO\Exceptions\InvalidResultException $e) {
             return false;
         }
     }

@@ -1,6 +1,10 @@
 <?php
 namespace BulkGate\Magesms\Controller\Adminhtml\Sign;
 
+/**
+ * Class Up
+ * @package BulkGate\Magesms\Controller\Adminhtml\Sign
+ */
 class Up extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
     public function execute()
@@ -29,6 +33,7 @@ class Up extends \BulkGate\Magesms\Controller\Adminhtml\Action
                     $block->getFormKey()
                 )
             );
+            $block->setSalt($this->generateTokens());
         }
 
         return $resultPage;

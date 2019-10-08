@@ -1,9 +1,13 @@
 <?php
 namespace BulkGate\Magesms\Controller\Adminhtml\Index;
 
-use BulkGate\Extensions\IO\Response;
+use BulkGate\Magesms\Extensions\IO\Response;
 use Magento\Framework\DataObject;
 
+/**
+ * Class Ajax
+ * @package BulkGate\Magesms\Controller\Adminhtml\Index
+ */
 class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
 {
     public function execute()
