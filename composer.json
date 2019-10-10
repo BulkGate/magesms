@@ -34,9 +34,5 @@
     "psr-4": {
       "BulkGate\\Magesms\\": ""
     }
-  },
-  "require": {
-    "ext-pdo": "*",
-    "ext-apache": "*"
   }
 }
