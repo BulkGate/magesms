@@ -23,7 +23,19 @@ class Customers extends Extensions\Customers
     {
         $collection = $this->getCustomerCollection($customers);
         $collection->getSelect()->limit($limit);
-        return $collection->getData();
+        $data = $collection->getData();
+
+        $filter = ['first_name', 'last_name', 'phone_mobile', 'company_name', 'country', 'zip', 'city', 'email'];
+        foreach ($data as $i => $row) {
+            $row['city'] = $row['billing_city'];
+            foreach ($row as $key => $item) {
+                if (!in_array($key, $filter, true)) {
+                    unset($data[$i][$key]);
+                }
+            }
+        }
+
+        return $data;
     }
 
     private function getCondition($filter)
@@ -283,22 +295,21 @@ class Customers extends Extensions\Customers
             $collection->getSelect()
                 ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, 
                     IF(`at_shipping_telephone`.`telephone`, `at_shipping_telephone`.`telephone`, 
-                    `at_mobile`.`value` )) AS telephone');
+                    `at_mobile`.`value` )) AS phone_mobile');
         } else {
             $collection->getSelect()
                 ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, 
-                    `at_shipping_telephone`.`telephone`) AS telephone');
+                    `at_shipping_telephone`.`telephone`) AS phone_mobile');
         }
         $collection->getSelect()
-            ->columns('IF(`at_shipping_country_id`.`country_id`, `at_shipping_country_id`.`country_id`, 
-                `at_billing_country_id`.`country_id`) AS country_id');
+            ->columns('IFNULL(`at_shipping_country_id`.`country_id`, 
+                `at_billing_country_id`.`country_id`) AS country');
 
         if ($customers) {
             $collection->addFieldToFilter('entity_id', ['in' => $customers]);
         }
         $collection->getSelect()
-            ->columns('e.firstname AS first_name');
-        $collection->getSelect()
+            ->columns('e.firstname AS first_name')
             ->columns('e.lastname AS last_name');
 
         return $this->cache = $collection;
