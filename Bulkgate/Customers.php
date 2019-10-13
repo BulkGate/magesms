@@ -21,7 +21,7 @@ class Customers extends Extensions\Customers
 
     protected function loadCustomers(array $customers, $limit = null)
     {
-        $collection = $this->getCustomerCollection($customers);
+        $collection = $this->getCustomerCache($customers);
         $collection->getSelect()->limit($limit);
         $data = $collection->getData();
 
@@ -82,8 +82,7 @@ class Customers extends Extensions\Customers
         foreach ($filters as $key => $filter) {
             if (isset($filter['values']) && count($filter['values']) > 0 && !$this->empty) {
                 /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
-                $collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
-                $collection->addNameToSelect();
+                $collection = $this->getCustomerCollection();
                 switch ($key) {
                     case 'firstname':
                         $collection->addFieldToFilter('firstname', $this->getCondition($filter));
@@ -101,25 +100,7 @@ class Customers extends Extensions\Customers
                         foreach ($filter['values'] as &$value) {
                             $value[1] = strtoupper($value[1]);
                         }
-                        $collection->addNameToSelect()
-                            ->joinAttribute(
-                                'billing_country_id',
-                                'customer_address/country_id',
-                                'default_billing',
-                                null,
-                                'left'
-                            )->joinAttribute(
-                                'shipping_country_id',
-                                'customer_address/country_id',
-                                'default_shipping',
-                                null,
-                                'left'
-                            );
-                        $collection->getSelect()
-                            ->columns('IFNULL(`at_shipping_country_id`.`country_id`, 
-                                `at_billing_country_id`.`country_id`) AS country_id');
-
-                        $collection->getSelect()->having($this->getSql($filter, 'country_id'));
+                        $collection->getSelect()->having($this->getSql($filter, 'country'));
                         foreach ($collection as $item) {
                             $customers[] = $item->getId();
                         }
@@ -131,9 +112,7 @@ class Customers extends Extensions\Customers
                         }
                         break;
                     case 'billing_city':
-                        $collection
-                            ->joinAttribute('billing_city', 'customer_address/city', 'default_billing', null, 'left')
-                            ->addFieldToFilter('billing_city', $this->getCondition($filter));
+                        $collection->addFieldToFilter('billing_city', $this->getCondition($filter));
                         foreach ($collection as $item) {
                             $customers[] = $item->getId();
                         }
@@ -234,8 +213,8 @@ class Customers extends Extensions\Customers
                         }
                         break;
                 }
+                $filtered = true;
             }
-            $filtered = true;
         }
 
         if (!$customers) {
@@ -246,20 +225,26 @@ class Customers extends Extensions\Customers
 
     protected function getTotal()
     {
-        return $this->getCustomerCollection()->count();
+        return $this->getCustomerCache()->count();
     }
 
     protected function getFilteredTotal(array $customers)
     {
-        return $this->getCustomerCollection($customers)->count();
+        return $this->empty === true ? 0 : $this->getCustomerCache($customers)->count();
     }
 
-    protected function getCustomerCollection(array $customers = [])
+    protected function getCustomerCache(array $customers = [])
     {
         if ($this->cache && $this->customers === $customers) {
             return $this->cache;
         }
         $this->customers = $customers;
+        $collection = $this->getCustomerCollection($customers);
+        return $this->cache = $collection;
+    }
+
+    protected function getCustomerCollection(array $customers = [])
+    {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
         $collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
@@ -312,6 +297,6 @@ class Customers extends Extensions\Customers
             ->columns('e.firstname AS first_name')
             ->columns('e.lastname AS last_name');
 
-        return $this->cache = $collection;
+        return $collection;
     }
 }
