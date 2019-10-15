@@ -34,9 +34,9 @@ class Strict
 
         if (property_exists($class, $name)) {
             $this->$name = $value;
+        } else {
+            throw new StrictException("Cannot write an undeclared property $class::\$$name.");
         }
-
-        throw new Exceptions\StrictException("Cannot write an undeclared property $class::\$$name.");
     }
 
     /**
