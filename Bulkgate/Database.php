@@ -52,7 +52,7 @@ class Database extends Extensions\Strict implements Extensions\Database\Database
 
     public function escape($string)
     {
-        return addslashes($string);
+        return PDO::quote($string);
     }
 
     public function prefix()
