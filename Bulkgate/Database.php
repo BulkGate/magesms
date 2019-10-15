@@ -52,7 +52,7 @@ class Database extends Extensions\Strict implements Extensions\Database\Database
 
     public function escape($string)
     {
-        return str_replace(["'", '"'], ["\'", '\"'], $string);
+        return addslashes($string);
     }
 
     public function prefix()
