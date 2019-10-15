@@ -1,9 +1,12 @@
 <?php
 namespace BulkGate\Magesms\Bulkgate;
 
-use BulkGate;
-use BulkGate\Extensions;
+use BulkGate\Magesms\Extensions;
 
+/**
+ * Class DIContainer
+ * @package BulkGate\Magesms\Bulkgate
+ */
 class DIContainer extends Extensions\DIContainer
 {
     protected function createDatabase()

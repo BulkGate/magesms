@@ -1,22 +1,24 @@
 <?php
 namespace BulkGate\Magesms\Bulkgate;
 
-use Bulkgate\Extensions\Database\Result;
-use BulkGate\Extensions\Exception;
-use Bulkgate\Extensions\Strict;
-use Bulkgate\Extensions\Database\IDatabase;
+use BulkGate\Magesms\Extensions;
 use PDO;
 
-class Database extends Strict implements IDatabase
+/**
+ * Class DatabaseInterface
+ * @package BulkGate\Magesms\Bulkgate
+ */
+class Database extends Extensions\Strict implements Extensions\Database\DatabaseInterface
 {
     private $db;
     private $sql = [];
+    private $_objectManager;
 
     public function __construct()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         /** @var \Magento\Framework\App\ResourceConnection $resource */
-        $resource = $objectManager->get(\Magento\Framework\App\ResourceConnection::class);
+        $resource = $this->_objectManager->get(\Magento\Framework\App\ResourceConnection::class);
         /** @var \Magento\Framework\DB\Adapter\Pdo\Mysql $db */
         $db = $resource->getConnection();
         $this->db = $db;
@@ -34,7 +36,7 @@ class Database extends Strict implements IDatabase
                 $output = [];
             }
         }
-        return new Result($output);
+        return new Extensions\Database\Result($output);
     }
 
     public function prepare($sql, array $params = [])
@@ -50,7 +52,7 @@ class Database extends Strict implements IDatabase
 
     public function escape($string)
     {
-        return addslashes($string);
+        return PDO::quote($string);
     }
 
     public function prefix()

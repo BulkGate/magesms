@@ -1,15 +1,19 @@
 <?php
 namespace BulkGate\Magesms\Bulkgate;
 
-use BulkGate\Extensions\Database\IDatabase;
+use BulkGate\Magesms\Extensions;
 
-class Customers extends \BulkGate\Extensions\Customers
+/**
+ * Class Customers
+ * @package BulkGate\Magesms\Bulkgate
+ */
+class Customers extends Extensions\Customers
 {
     /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $cache */
     private $cache;
     private $customers = [];
 
-    public function __construct(IDatabase $db)
+    public function __construct(Extensions\Database\DatabaseInterface $db)
     {
         parent::__construct($db);
         $this->table_user_key = 'entity_id';
@@ -17,9 +21,21 @@ class Customers extends \BulkGate\Extensions\Customers
 
     protected function loadCustomers(array $customers, $limit = null)
     {
-        $collection = $this->getCustomerCollection($customers);
+        $collection = $this->getCustomerCache($customers);
         $collection->getSelect()->limit($limit);
-        return $collection->getData();
+        $data = $collection->getData();
+
+        $filter = ['first_name', 'last_name', 'phone_mobile', 'company_name', 'country', 'zip', 'city', 'email'];
+        foreach ($data as $i => $row) {
+            $row['city'] = $row['billing_city'];
+            foreach ($row as $key => $item) {
+                if (!in_array($key, $filter, true)) {
+                    unset($data[$i][$key]);
+                }
+            }
+        }
+
+        return $data;
     }
 
     private function getCondition($filter)
@@ -66,8 +82,7 @@ class Customers extends \BulkGate\Extensions\Customers
         foreach ($filters as $key => $filter) {
             if (isset($filter['values']) && count($filter['values']) > 0 && !$this->empty) {
                 /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
-                $collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
-                $collection->addNameToSelect();
+                $collection = $this->getCustomerCollection();
                 switch ($key) {
                     case 'firstname':
                         $collection->addFieldToFilter('firstname', $this->getCondition($filter));
@@ -85,25 +100,7 @@ class Customers extends \BulkGate\Extensions\Customers
                         foreach ($filter['values'] as &$value) {
                             $value[1] = strtoupper($value[1]);
                         }
-                        $collection->addNameToSelect()
-                            ->joinAttribute(
-                                'billing_country_id',
-                                'customer_address/country_id',
-                                'default_billing',
-                                null,
-                                'left'
-                            )->joinAttribute(
-                                'shipping_country_id',
-                                'customer_address/country_id',
-                                'default_shipping',
-                                null,
-                                'left'
-                            );
-                        $collection->getSelect()
-                            ->columns('IFNULL(`at_shipping_country_id`.`country_id`, 
-                                `at_billing_country_id`.`country_id`) AS country_id');
-
-                        $collection->getSelect()->having($this->getSql($filter, 'country_id'));
+                        $collection->getSelect()->having($this->getSql($filter, 'country'));
                         foreach ($collection as $item) {
                             $customers[] = $item->getId();
                         }
@@ -115,9 +112,7 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'billing_city':
-                        $collection
-                            ->joinAttribute('billing_city', 'customer_address/city', 'default_billing', null, 'left')
-                            ->addFieldToFilter('billing_city', $this->getCondition($filter));
+                        $collection->addFieldToFilter('billing_city', $this->getCondition($filter));
                         foreach ($collection as $item) {
                             $customers[] = $item->getId();
                         }
@@ -166,8 +161,9 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'all_orders_amount':
-                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false)
+                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false) {
                             $collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
+                        }
                         $sql = $resource->getConnection()
                             ->prepareSqlCondition(
                                 'orders_sum',
@@ -188,8 +184,9 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                     case 'order_date':
-                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false)
+                        if (strpos($collection->getSelect(), $collection->getTable('sales_order_grid')) === false) {
                             $collection->joinTable('sales_order_grid', 'customer_id=entity_id', ['entity_id']);
+                        }
                         $sql = $resource->getConnection()
                             ->prepareSqlCondition(
                                 'created_at_sale',
@@ -216,36 +213,38 @@ class Customers extends \BulkGate\Extensions\Customers
                         }
                         break;
                 }
+                $filtered = true;
             }
-            $filtered = true;
         }
 
         if (!$customers) {
             $this->empty = true;
         }
-        return array(array_unique($customers), $filtered);
+        return [array_unique($customers), $filtered];
     }
 
     protected function getTotal()
     {
-        return $this->getCustomerCollection()->count();
+        return $this->getCustomerCache()->count();
     }
 
     protected function getFilteredTotal(array $customers)
     {
-//        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
-//        $collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
-//        return $collection->addFieldToFilter('entity_id', array('in' => $customers))->count();
-        return $this->getCustomerCollection($customers)->count();
+        return $this->empty === true ? 0 : $this->getCustomerCache($customers)->count();
     }
 
-    protected function getCustomerCollection(array $customers = [])
+    protected function getCustomerCache(array $customers = [])
     {
         if ($this->cache && $this->customers === $customers) {
             return $this->cache;
         }
         $this->customers = $customers;
+        $collection = $this->getCustomerCollection($customers);
+        return $this->cache = $collection;
+    }
+
+    protected function getCustomerCollection(array $customers = [])
+    {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         /** @var \Magento\Customer\Model\ResourceModel\Customer\Collection $collection */
         $collection = $objectManager->create(\Magento\Customer\Model\ResourceModel\Customer\Collection::class);
@@ -281,24 +280,23 @@ class Customers extends \BulkGate\Extensions\Customers
             $collection->getSelect()
                 ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, 
                     IF(`at_shipping_telephone`.`telephone`, `at_shipping_telephone`.`telephone`, 
-                    `at_mobile`.`value` )) AS telephone');
+                    `at_mobile`.`value` )) AS phone_mobile');
         } else {
             $collection->getSelect()
                 ->columns('IF(`at_billing_telephone`.`telephone`, `at_billing_telephone`.`telephone`, 
-                    `at_shipping_telephone`.`telephone`) AS telephone');
+                    `at_shipping_telephone`.`telephone`) AS phone_mobile');
         }
         $collection->getSelect()
-            ->columns('IF(`at_shipping_country_id`.`country_id`, `at_shipping_country_id`.`country_id`, 
-                `at_billing_country_id`.`country_id`) AS country_id');
+            ->columns('IFNULL(`at_shipping_country_id`.`country_id`, 
+                `at_billing_country_id`.`country_id`) AS country');
 
         if ($customers) {
             $collection->addFieldToFilter('entity_id', ['in' => $customers]);
         }
         $collection->getSelect()
-            ->columns('e.firstname AS first_name');
-        $collection->getSelect()
+            ->columns('e.firstname AS first_name')
             ->columns('e.lastname AS last_name');
 
-        return $this->cache = $collection;
+        return $collection;
     }
 }

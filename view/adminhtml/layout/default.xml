@@ -5,10 +5,6 @@
         <css src="BulkGate_Magesms::css/styles.css"/>
     </head>
     <body>
-        <!--<referenceBlock name="page.menu" remove="true" />-->
-        <referenceContainer name="page.menu">
-            <block class="BulkGate\Magesms\Block\Adminhtml\Menu" name="menu" as="menu" template="Magento_Backend::menu.phtml"/>
-        </referenceContainer>
         <referenceContainer name="content">
             <block class="Magento\Backend\Block\Template" name="magesms.page" template="BulkGate_Magesms::layout.phtml"/>
         </referenceContainer>

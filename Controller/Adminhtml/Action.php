@@ -2,6 +2,7 @@
 
 namespace BulkGate\Magesms\Controller\Adminhtml;
 
+use BulkGate\Magesms\Extensions\IO\Exceptions\InvalidResultException;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\Menu\Config;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -9,7 +10,6 @@ use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Framework\App\RequestInterface;
 use BulkGate\Magesms\Bulkgate\DIContainer;
-use BulkGate\Extensions\IO\InvalidResultException;
 use BulkGate\Magesms\Bulkgate\MageSMS;
 use BulkGate\Magesms\Helper\Data;
 
@@ -24,6 +24,7 @@ abstract class Action extends \Magento\Backend\App\Action
     protected $_resultJsonFactory;
     protected $dIContainer;
     protected $_mageHelper;
+    protected $_menuConfig;
 
     public function __construct(
         Context $context,
@@ -167,8 +168,7 @@ abstract class Action extends \Magento\Backend\App\Action
     protected function generateTokens()
     {
         $output = [];
-        /** @var $menu \Magento\Backend\Model\Menu\Config */
-        $menu = $this->getObjectManager()->get(\Magento\Backend\Model\Menu\Config::class)->getMenu()
+        $menu = $this->_menuConfig->getMenu()
             ->get('BulkGate_Magesms::magesms');
         foreach ($menu->getChildren() as $item) {
             if ($item->getAction()) {

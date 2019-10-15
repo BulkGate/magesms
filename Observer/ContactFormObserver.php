@@ -1,9 +1,14 @@
 <?php
 namespace BulkGate\Magesms\Observer;
 
+use BulkGate\Magesms\Extensions;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 
+/**
+ * Class ContactFormObserver
+ * @package BulkGate\Magesms\Observer
+ */
 class ContactFormObserver implements ObserverInterface
 {
     protected $_magesms;
@@ -20,7 +25,7 @@ class ContactFormObserver implements ObserverInterface
         $controller = $observer->getControllerAction();
         $request = $controller->getRequest();
 
-        $this->_magesms->runHook('contact_form', new \BulkGate\Extensions\Hook\Variables([
+        $this->_magesms->runHook('contact_form', new Extensions\Hook\Variables([
             'customer_email' => trim($request->getParam('email')),
             'customer_name' => trim($request->getParam('name')),
             'customer_phone' => trim($request->getParam('telephone')),

@@ -6,6 +6,10 @@ use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use BulkGate\Magesms\Bulkgate\DIContainer;
 
+/**
+ * Class Uninstall
+ * @package BulkGate\Magesms\Setup
+ */
 class Uninstall implements UninstallInterface
 {
     private $dIContainer;

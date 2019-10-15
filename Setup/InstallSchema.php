@@ -6,6 +6,10 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use BulkGate\Magesms\Bulkgate\DIContainer;
 
+/**
+ * Class InstallSchema
+ * @package BulkGate\Magesms\Setup
+ */
 class InstallSchema implements InstallSchemaInterface
 {
     private $dIContainer;

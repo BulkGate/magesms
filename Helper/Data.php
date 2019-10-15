@@ -6,6 +6,10 @@ use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\Storage\WriterInterface;
 use Magento\Framework\App\Helper\Context;
 
+/**
+ * Class Data
+ * @package BulkGate\Magesms\Helper
+ */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     protected $configWriter;

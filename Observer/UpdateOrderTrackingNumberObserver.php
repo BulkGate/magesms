@@ -1,9 +1,14 @@
 <?php
 namespace BulkGate\Magesms\Observer;
 
+use BulkGate\Magesms\Extensions;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Event\Observer as EventObserver;
 
+/**
+ * Class UpdateOrderTrackingNumberObserver
+ * @package BulkGate\Magesms\Observer
+ */
 class UpdateOrderTrackingNumberObserver implements ObserverInterface
 {
     protected $_magesms;
@@ -24,16 +29,21 @@ class UpdateOrderTrackingNumberObserver implements ObserverInterface
 
         if ($track->hasDataChanges() &&
             ($track->getCreatedAt() == $track->getUpdatedAt() || $track->dataHasChangedFor('track_number'))) {
-            if ($this->_registry->registry('magesms_track_obj'))
+            if ($this->_registry->registry('magesms_track_obj')) {
                 $this->_registry->unregister('magesms_track_obj');
+            }
             $this->_registry->register('magesms_track_obj', $track);
 
-            $this->_magesms->runHook('update_order_tracking_number', new \BulkGate\Extensions\Hook\Variables([
-                'customer_id' => $track->getShipment()->getCustomerId(),
-                'customer_firstname' => $track->getShipment()->getCustomerFirstname(),
-                'customer_lastname' => $track->getShipment()->getCustomerLastname(),
-                'customer_email' => $track->getShipment()->getCustomerEmail(),
-            ]), $observer );
+            $this->_magesms->runHook(
+                'update_order_tracking_number',
+                new Extensions\Hook\Variables([
+                    'customer_id' => $track->getShipment()->getCustomerId(),
+                    'customer_firstname' => $track->getShipment()->getCustomerFirstname(),
+                    'customer_lastname' => $track->getShipment()->getCustomerLastname(),
+                    'customer_email' => $track->getShipment()->getCustomerEmail(),
+                ]),
+                $observer
+            );
         }
     }
 }
