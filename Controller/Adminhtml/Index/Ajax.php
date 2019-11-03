@@ -23,6 +23,9 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
             $response->setMessage(__('Auth error'));
             return $this->getResultJsonFactory()->create()->setData($response);
         }
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $scopeConfig = $objectManager->get(\Magento\Framework\App\Config\ScopeConfigInterface::class);
+        $storeName = $scopeConfig->getValue('general/store_information/name');
         switch ($action) {
             case 'authenticate':
                 if (!($proxy = $this->getDIContainer()->getProxy()->authenticate())) {
@@ -35,7 +38,7 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
             case 'register':
                 $proxy = $this->getDIContainer()->getProxy()->register(
                     array_merge(
-                        ['name' => 'MageSMS'],
+                        ['name' => $storeName ?: 'MageSMS'],
                         $this->getRequest()->getParam('__bulkgate')
                     )
                 );
@@ -49,7 +52,7 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
             case 'login':
                 $proxy = $this->getDIContainer()->getProxy()->login(
                     array_merge(
-                        ['name' => 'MageSMS'],
+                        ['name' => $storeName ?: 'MageSMS'],
                         $this->getRequest()->getParam('__bulkgate')
                     )
                 );

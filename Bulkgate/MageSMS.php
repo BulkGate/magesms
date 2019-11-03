@@ -133,7 +133,8 @@ class MageSMS extends Extensions\Strict implements Extensions\ModuleInterface
 
     public function url()
     {
-        return $this->getUrl('/');
+        $storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+        return $storeManager->getStore()->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_WEB);
     }
 
     public function info($key = null)
