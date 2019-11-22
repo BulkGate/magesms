@@ -37,6 +37,8 @@ class UpdateOrderTrackingNumberObserver implements ObserverInterface
             $this->_magesms->runHook(
                 'update_order_tracking_number',
                 new Extensions\Hook\Variables([
+                    'order_id' => $track->getId(),
+                    'store_id' => $track->getStoreId(),
                     'customer_id' => $track->getShipment()->getCustomerId(),
                     'customer_firstname' => $track->getShipment()->getCustomerFirstname(),
                     'customer_lastname' => $track->getShipment()->getCustomerLastname(),

@@ -36,6 +36,9 @@ class UpdateOrderStatusObserver implements ObserverInterface
             $this->_magesms->runHook(
                 'order_status_change_'.$order->getData('status'),
                 new Extensions\Hook\Variables([
+                    'order_status' => $order->getData('status'),
+                    'order_id' => $order->getId(),
+                    'store_id' => $order->getStoreId(),
                     'customer_id' => $order->getCustomerId(),
                     'customer_firstname' => $order->getCustomerFirstname(),
                     'customer_lastname' => $order->getCustomerLastname(),

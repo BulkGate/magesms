@@ -161,6 +161,26 @@ class MageSMS extends Extensions\Strict implements Extensions\ModuleInterface
 
     public function runHook($name, Extensions\Hook\Variables $variables, EventObserver $observer)
     {
+        $storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
+        if (!$variables->get('store_id')) {
+            if (is_callable([$observer, 'getStoreId']) && $observer->getStoreId() !== null) {
+                $storeId = $observer->getStoreId();
+            } elseif (is_callable([$observer, 'getStore']) && $observer->getStore() !== null) {
+                $storeId = $observer->getStore()->getId();
+            } elseif ($storeManager->getStore()) {
+                $storeId = $storeManager->getStore()->getStoreId();
+            } else {
+                $storeId = null;
+            }
+            $variables->set('store_id', $storeId);
+        } else {
+            $storeId = $variables->get('store_id');
+        }
+        if (!$variables->get('lang_id')) {
+            $langId = $storeManager->getStore($storeId)->getConfig('general/locale/code');
+            $variables->set('lang_id', $langId);
+        }
+
         /** @var DIContainer $di */
         $di = $this->objectManager->get(DIContainer::class);
         $hook = new Extensions\Hook\Hook(
@@ -171,19 +191,6 @@ class MageSMS extends Extensions\Strict implements Extensions\ModuleInterface
             $di->getSettings(),
             new HookLoad($observer)
         );
-
-        $storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);
-        if (is_callable([$observer, 'getStoreId'])) {
-            $storeId = $observer->getStoreId();
-        } elseif (is_callable([$observer, 'getStore'])) {
-            $storeId = $observer->getStore()->getId();
-        } elseif ($storeManager->getStore()) {
-            $storeId = $storeManager->getStore()->getStoreId();
-        } else {
-            $storeId = null;
-        }
-
-        $variables->set('store_id', $storeId);
 
         try {
             $hook->run((string)$name, $variables);
