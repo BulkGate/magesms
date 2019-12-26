@@ -38,21 +38,21 @@ class Helpers extends Strict
 
     public static function serialize($data)
     {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         if (class_exists(\Magento\Framework\Serialize\SerializerInterface::class)) {
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $serializer = $objectManager->get(\Magento\Framework\Serialize\SerializerInterface::class);
             return $serializer->serialize($data);
         }
-        return \serialize($data);
+        return \Zend\Serializer\Serializer::unserialize($data);
     }
 
     public static function unserialize($data)
     {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         if (class_exists(\Magento\Framework\Serialize\SerializerInterface::class)) {
-            $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
             $serializer = $objectManager->get(\Magento\Framework\Serialize\SerializerInterface::class);
             return $serializer->unserialize($data);
         }
-        return \serialize($data);
+        return \Zend\Serializer\Serializer::serialize($data);
     }
 }
