@@ -11,13 +11,11 @@ class Helpers extends Strict
 {
     public static function outOfStockCheck(Settings $settings, $product_id)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $serializer = $objectManager->get(\Magento\Framework\Serialize\SerializerInterface::class);
         $result = false;
 
         $list = $settings->load('static:out_of_stock', false);
 
-        $list = $list !== false ?  $serializer->unserialize($list) : [];
+        $list = $list !== false ?  static::unserialize($list) : [];
 
         if (is_array($list)) {
             foreach ($list as $key => $time) {
@@ -33,8 +31,28 @@ class Helpers extends Strict
             $result = true;
         }
 
-        $settings->set('static:out_of_stock', $serializer->serialize($list));
+        $settings->set('static:out_of_stock', static::serialize($list));
 
         return $result;
+    }
+
+    public static function serialize($data)
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        if (class_exists(\Magento\Framework\Serialize\Serializer\Serialize::class)) {
+            $serializer = $objectManager->get(\Magento\Framework\Serialize\SerializerInterface::class);
+            return $serializer->serialize($data);
+        }
+        return \Zend\Serializer\Serializer::serialize($data);
+    }
+
+    public static function unserialize($data)
+    {
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        if (class_exists(\Magento\Framework\Serialize\Serializer\Serialize::class)) {
+            $serializer = $objectManager->get(\Magento\Framework\Serialize\Serializer\Serialize::class);
+            return $serializer->unserialize($data);
+        }
+        return \Zend\Serializer\Serializer::unserialize($data);
     }
 }
