@@ -11,13 +11,11 @@ class Helpers extends Strict
 {
     public static function outOfStockCheck(Settings $settings, $product_id)
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $serializer = $objectManager->get(\Magento\Framework\Serialize\SerializerInterface::class);
         $result = false;
 
         $list = $settings->load('static:out_of_stock', false);
 
-        $list = $list !== false ?  $serializer->unserialize($list) : [];
+        $list = $list !== false ?  unserialize($list) : [];
 
         if (is_array($list)) {
             foreach ($list as $key => $time) {
@@ -33,7 +31,7 @@ class Helpers extends Strict
             $result = true;
         }
 
-        $settings->set('static:out_of_stock', $serializer->serialize($list));
+        $settings->set('static:out_of_stock', serialize($list));
 
         return $result;
     }
