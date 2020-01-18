@@ -22,7 +22,7 @@ class Settings extends Strict implements SettingsInterface
 
     public function load($settings_key, $default = false)
     {
-        list($scope, $key) = Key::decode($settings_key);
+        [$scope, $key] = Key::decode($settings_key);
 
         if (isset($this->data[$scope])) {
             if (isset($this->data[$scope][$key])) {
@@ -46,19 +46,19 @@ class Settings extends Strict implements SettingsInterface
         if ($result->getNumRows() > 0) {
             foreach ($result as $item) {
                 switch ($item->type) {
-                    case "text":
+                    case 'text':
                         $this->data[$scope][$item->key] = (string)$item->value;
                         break;
-                    case "int":
+                    case 'int':
                         $this->data[$scope][$item->key] = (int)$item->value;
                         break;
-                    case "float":
+                    case 'float':
                         $this->data[$scope][$item->key] = (float)$item->value;
                         break;
-                    case "bool":
+                    case 'bool':
                         $this->data[$scope][$item->key] = (bool)$item->value;
                         break;
-                    case "json":
+                    case 'json':
                         try {
                             $this->data[$scope][$item->key] = Json::decode($item->value);
                         } catch (Exceptions\JsonException $e) {
@@ -80,7 +80,7 @@ class Settings extends Strict implements SettingsInterface
             $meta['datetime'] = time();
         }
 
-        list($scope, $key) = Key::decode($settings_key);
+        [$scope, $key] = Key::decode($settings_key);
 
         $result = $this->db->execute(
             $this->db->prepare(
@@ -170,7 +170,7 @@ class Settings extends Strict implements SettingsInterface
     public function uninstall()
     {
         if ($this->load('main:delete_db', false)) {
-            $this->db->execute("DROP TABLE IF EXISTS `" . $this->db->table('bulkgate_module') . "`");
+            $this->db->execute('DROP TABLE IF EXISTS `'. $this->db->table('bulkgate_module') .'`');
         }
     }
 

@@ -99,14 +99,19 @@ class MageSMS extends Extensions\Strict implements Extensions\ModuleInterface
                 return true;
             }
             return false;
-        } else {
+        }
+
+        $languages = (array)$this->settings->load(':languages', null);
+        $langs = ['default' => 'Default'];
+        if ($languages !== $langs) {
             $this->settings->set(
                 ':languages',
-                Extensions\Json::encode(['default' => 'Default']),
+                Extensions\Json::encode($langs),
                 ['type' => 'json']
             );
             return true;
         }
+        return false;
     }
 
     public function storeLoad()
@@ -120,7 +125,11 @@ class MageSMS extends Extensions\Strict implements Extensions\ModuleInterface
             $actual[$id] = $store->getGroup()->getName().' - '. $store->getName();
         }
         if ($stores !== $actual) {
-            $this->settings->set(':stores', Extensions\Json::encode($actual), ['type' => 'json']);
+            $this->settings->set(
+                ':stores',
+                Extensions\Json::encode($actual),
+                ['type' => 'json']
+            );
             return true;
         }
         return false;

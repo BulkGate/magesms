@@ -10,18 +10,22 @@ use PDO;
  */
 class Database extends Extensions\Strict implements Extensions\Database\DatabaseInterface
 {
+    /**
+     * @var \Magento\Framework\DB\Adapter\Pdo\Mysql
+     */
     private $db;
+    /**
+     * @var \Magento\Framework\App\ResourceConnection
+     */
+    private $connection;
     private $sql = [];
     private $_objectManager;
 
     public function __construct()
     {
         $this->_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        /** @var \Magento\Framework\App\ResourceConnection $resource */
-        $resource = $this->_objectManager->get(\Magento\Framework\App\ResourceConnection::class);
-        /** @var \Magento\Framework\DB\Adapter\Pdo\Mysql $db */
-        $db = $resource->getConnection();
-        $this->db = $db;
+        $this->connection = $this->_objectManager->get(\Magento\Framework\App\ResourceConnection::class);
+        $this->db = $this->connection->getConnection();
     }
 
     public function execute($sql)
@@ -62,7 +66,7 @@ class Database extends Extensions\Strict implements Extensions\Database\Database
 
     public function table($table)
     {
-        return $this->db->getTableName($table);
+        return $this->connection->getTableName($table);
     }
 
     public function getSqlList()
