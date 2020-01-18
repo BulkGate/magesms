@@ -40,7 +40,7 @@ class Helpers extends Strict
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         if (class_exists(\Magento\Framework\Serialize\Serializer\Serialize::class)) {
-            $serializer = $objectManager->get(\Magento\Framework\Serialize\SerializerInterface::class);
+            $serializer = $objectManager->get(\Magento\Framework\Serialize\Serializer\Serialize::class);
             return $serializer->serialize($data);
         }
         return \Zend\Serializer\Serializer::serialize($data);
