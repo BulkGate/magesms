@@ -36,7 +36,7 @@ class NewOrderObserver implements ObserverInterface
         }
 
         $this->_magesms->runHook('order_new', new Extensions\Hook\Variables([
-            'order_status' => $order->getData('status'),
+            'order_status' => strtolower($order->getData('status')),
             'order_id' => $order->getId(),
             'store_id' => $order->getStoreId(),
             'customer_id' => $order->getCustomerId(),

@@ -133,6 +133,6 @@ abstract class Customers extends Strict implements CustomersInterface
             $this->empty = true;
         }
 
-        return $this->empty ? [] : count($customers) > 0 ? array_intersect($customers, $output) : $output;
+        return ($this->empty ? [] : count($customers) > 0) ? array_intersect($customers, $output) : $output;
     }
 }

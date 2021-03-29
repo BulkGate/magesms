@@ -54,7 +54,7 @@ class MageSMS extends Extensions\Strict implements Extensions\ModuleInterface
         $status_list = (array)$this->settings->load(':order_status_list', null);
         $actual = [];
         foreach ($statuses->toOptionArray() as $status) {
-            $actual[$status['value']] = $status['label'];
+            $actual[strtolower($status['value'])] = $status['label'];
         }
         if ($status_list !== $actual) {
             $this->settings->set(

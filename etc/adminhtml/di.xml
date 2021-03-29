@@ -11,4 +11,9 @@
             </argument>
         </arguments>
     </type>
+<!-- after bulkgate fixed
+    <type name="Magento\Backend\Block\Widget\Button\Toolbar">
+        <plugin name="BulkGate_Magesms::pluginBefore" type="BulkGate\Magesms\Plugin\PluginBefore" />
+    </type>
+-->
 </config>

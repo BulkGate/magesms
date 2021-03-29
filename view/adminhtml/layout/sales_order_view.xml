@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+<!-- after bulkgate fixed
+        <link src="BulkGate_Magesms::js/modal.js"/>
+        <script src="https://portal.bulkgate.com/static/widget-api.production.min.js" src_type="url" />
+-->
+    </head>
+</page>

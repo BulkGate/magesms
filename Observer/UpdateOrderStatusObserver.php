@@ -32,11 +32,11 @@ class UpdateOrderStatusObserver implements ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         $order = $observer->getOrder();
 
-        if ($order->getOrigData('status') !== $order->getData('status')) {
+        if ($order->getOrigData('status') !== strtolower($order->getData('status'))) {
             $this->_magesms->runHook(
-                'order_status_change_'.$order->getData('status'),
+                'order_status_change_'.strtolower($order->getData('status')),
                 new Extensions\Hook\Variables([
-                    'order_status' => $order->getData('status'),
+                    'order_status' => strtolower($order->getData('status')),
                     'order_id' => $order->getId(),
                     'store_id' => $order->getStoreId(),
                     'customer_id' => $order->getCustomerId(),
