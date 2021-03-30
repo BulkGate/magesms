@@ -15,7 +15,7 @@ class PluginBefore
     /**
      * @var DIContainer
      */
-    private DIContainer $dIContainer;
+    protected $dIContainer;
 
     public function __construct(DIContainer $dIContainer)
     {
@@ -28,7 +28,7 @@ class PluginBefore
         \Magento\Backend\Block\Widget\Button\ButtonList $buttonList
     ) {
         $this->_request = $context->getRequest();
-        if($this->_request->getFullActionName() == 'sales_order_view'){
+        if ($this->_request->getFullActionName() == 'sales_order_view') {
             $order = $context->getOrder();
             if (!$order) {
                 return;
