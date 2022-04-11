@@ -10,6 +10,7 @@ class About extends \BulkGate\Magesms\Controller\Adminhtml\Action
     public function execute()
     {
         $resultPage = $this->_resultPageFactory->create();
+        $resultPage->addPageLayoutHandles([], 'magesms_default', false);
         $resultPage->setActiveMenu('BulkGate_Magesms::magesms_about');
         $this->_addBreadcrumb(__('About'), __('About'));
         $resultPage->getConfig()->getTitle()->prepend(__('About'));

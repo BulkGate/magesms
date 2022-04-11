@@ -12,6 +12,7 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
         $this->synchronize();
 
         $resultPage = $this->_resultPageFactory->create();
+        $resultPage->addPageLayoutHandles([], 'magesms_default', false);
         $resultPage->setActiveMenu('BulkGate_Magesms::magesms_dashboard');
         $this->_addBreadcrumb(__('Dashboard'), __('Dashboard'));
         $resultPage->getConfig()->getTitle()->prepend(__('Dashboard'));

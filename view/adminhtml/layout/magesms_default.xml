@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/layout_generic.xsd">
+    <head>
+        <css src="BulkGate_Magesms::css/styles.css"/>
+        <link src="BulkGate_Magesms::js/array-fix.js" defer="defer"/>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Magento\Backend\Block\Template" name="magesms.page" template="BulkGate_Magesms::layout.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

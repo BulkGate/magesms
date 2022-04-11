@@ -16,6 +16,7 @@ class Index extends \BulkGate\Magesms\Controller\Adminhtml\Action
         if ($actionName === 'index') {
             $actionName = 'default';
         }
+        $resultPage->addPageLayoutHandles([], 'magesms_default', false);
         $resultPage->setActiveMenu('BulkGate_Magesms::magesms');
 
         $module = $this->getDIContainer()->getModule();

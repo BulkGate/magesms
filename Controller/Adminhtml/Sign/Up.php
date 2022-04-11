@@ -12,6 +12,7 @@ class Up extends \BulkGate\Magesms\Controller\Adminhtml\Action
         $this->synchronize();
 
         $resultPage = $this->_resultPageFactory->create();
+        $resultPage->addPageLayoutHandles([], 'magesms_default', false);
         $resultPage->setActiveMenu('BulkGate_Magesms::magesms_sign_up');
         $this->_addBreadcrumb(__('Sign-in'), __('Sign-up'));
         $resultPage->getConfig()->getTitle()->prepend(__('Sign-up'));
