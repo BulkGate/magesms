@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="bulkgate_module" resource="default" engine="innodb">
+        <column xsi:type="varchar" name="scope" nullable="false" length="50" default="main"/>
+        <column xsi:type="varchar" name="key" nullable="false" length="50"/>
+        <column xsi:type="varchar" name="type" nullable="false" length="50" default="text"/>
+        <column xsi:type="text" name="value" nullable="false" default=""/>
+        <column xsi:type="bigint" name="datetime" nullable="false" />
+        <column xsi:type="int" name="order" nullable="false" default="0" />
+        <column xsi:type="varchar" name="synchronize_flag" nullable="false" length="50" default="none" />
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="scope"/>
+            <column name="key"/>
+        </constraint>
+    </table>
+</schema>
