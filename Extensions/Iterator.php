@@ -29,26 +29,31 @@ class Iterator extends Strict implements \Iterator
         return $this->array[$key] = $value;
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         reset($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return current($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return key($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         next($this->array);
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return key($this->array) !== null;
