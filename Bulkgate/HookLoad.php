@@ -114,11 +114,12 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         $variables->set('order_id', $order->getIncrementId());
         $variables->set('order_payment', $order->getPayment()->getMethodInstance()->getTitle());
 
+        $display = (class_exists('Zend_Currency')) ? \Zend_Currency::NO_SYMBOL : 1;
         $variables->set(
             'order_total_paid',
             $this->currency->format(
                 $order->getGrandTotal(),
-                ['display' => \Zend_Currency::NO_SYMBOL],
+                ['display' => $display],
                 false
             )
         );
@@ -126,7 +127,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
             'order_subtotal',
             $this->currency->format(
                 $order->getSubtotal(),
-                ['display' => \Zend_Currency::NO_SYMBOL],
+                ['display' => $display],
                 false
             )
         );
@@ -134,7 +135,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
             'order_shipping_amount',
             $this->currency->format(
                 $order->getShippingAmount(),
-                ['display' => \Zend_Currency::NO_SYMBOL],
+                ['display' => $display],
                 false
             )
         );
@@ -188,7 +189,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
 
     private function formatDateTime(Extensions\Hook\Variables $variables, $date)
     {
-        $variables->set('order_date', $date);
+        $variables->set('order_date', (string)$date);
         $parse = date_parse($date);
 
         $variables->set('order_date1', $parse['day'].'.'.$parse['month'].'.'.$parse['year']);
