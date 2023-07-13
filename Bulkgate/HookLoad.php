@@ -1,4 +1,5 @@
 <?php
+
 namespace BulkGate\Magesms\Bulkgate;
 
 use BulkGate\Magesms\Extensions;
@@ -114,7 +115,8 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         $variables->set('order_id', $order->getIncrementId());
         $variables->set('order_payment', $order->getPayment()->getMethodInstance()->getTitle());
 
-        $display = (class_exists('Zend_Currency')) ? \Zend_Currency::NO_SYMBOL : 1;
+        $display = (class_exists('Magento\Framework\Currency\Data\Currency')) ?
+            \Magento\Framework\Currency\Data\Currency::NO_SYMBOL : 1;
         $variables->set(
             'order_total_paid',
             $this->currency->format(
@@ -146,7 +148,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         $variables->set('cart_id', $order->getQuoteId());
 
         $products = $order->getAllItems();
-        $arr = [1 => [], 2 => [],3 => [], 4 => [], 5 => []];
+        $arr = [1 => [], 2 => [], 3 => [], 4 => [], 5 => []];
         foreach ($products as $product) {
             $arr[1][] = $product->getProductId().'/'.$product->getName().'/'.$product->getQtyOrdered();
             $arr[2][] = 'id:'.$product->getProductId().', '.__('name').':'.$product->getName().', '.__('qty')
