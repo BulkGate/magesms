@@ -74,7 +74,7 @@ $params = $block->getParams();
                         asset.dependencies.push("polyfill-broken-api");
                     }
                 }
-                data.assets['polyfill-broken-api'] = { filename: "<?= Extensions\Escape::url($asset->getUrl('BulkGate_Magesms::js/array-fix.js')); ?>"}
+                data.assets['polyfill-broken-api'] = { filename: "<?= Extensions\Escape::url($block->getViewFileUrl('BulkGate_Magesms::js/array-fix.js')); ?>"}
             });
 
             var input = _bg_client.parseQuery(location.search);
