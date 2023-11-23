@@ -86,6 +86,15 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         if (empty($shipping)) {
             $shipping = $order->getBillingAddress();
         }
+        $billing = $order->getBillingAddress();
+        if (empty($billing)) {
+            $billing = $order->getShippingAddress();
+        }
+
+        if ($order->getData('shipping_method') === 'instore_pickup') {
+            $shipping = $billing;
+        }
+
         $variables->set('customer_shipping_firstname', $shipping->getFirstname());
         $variables->set('customer_shipping_lastname', $shipping->getLastname());
         $variables->set('customer_company', $shipping->getCompany());
@@ -97,10 +106,6 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         $variables->set('customer_phone', $shipping->getTelephone());
         $variables->set('customer_vat_number', $shipping->getVatId());
 
-        $billing = $order->getBillingAddress();
-        if (empty($billing)) {
-            $billing = $order->getShippingAddress();
-        }
         $variables->set('customer_invoice_company', $billing->getCompany());
         $variables->set('customer_invoice_firstname', $billing->getFirstname());
         $variables->set('customer_invoice_lastname', $billing->getLastname());
