@@ -1,4 +1,5 @@
 <?php
+
 namespace BulkGate\Magesms\Bulkgate;
 
 use BulkGate\Magesms\Extensions;
@@ -85,6 +86,15 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         if (empty($shipping)) {
             $shipping = $order->getBillingAddress();
         }
+        $billing = $order->getBillingAddress();
+        if (empty($billing)) {
+            $billing = $order->getShippingAddress();
+        }
+
+        if ($order->getData('shipping_method') === 'instore_pickup') {
+            $shipping = $billing;
+        }
+
         $variables->set('customer_shipping_firstname', $shipping->getFirstname());
         $variables->set('customer_shipping_lastname', $shipping->getLastname());
         $variables->set('customer_company', $shipping->getCompany());
@@ -96,10 +106,6 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         $variables->set('customer_phone', $shipping->getTelephone());
         $variables->set('customer_vat_number', $shipping->getVatId());
 
-        $billing = $order->getBillingAddress();
-        if (empty($billing)) {
-            $billing = $order->getShippingAddress();
-        }
         $variables->set('customer_invoice_company', $billing->getCompany());
         $variables->set('customer_invoice_firstname', $billing->getFirstname());
         $variables->set('customer_invoice_lastname', $billing->getLastname());
@@ -114,11 +120,13 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         $variables->set('order_id', $order->getIncrementId());
         $variables->set('order_payment', $order->getPayment()->getMethodInstance()->getTitle());
 
+        $display = (class_exists('Magento\Framework\Currency\Data\Currency')) ?
+            \Magento\Framework\Currency\Data\Currency::NO_SYMBOL : 1;
         $variables->set(
             'order_total_paid',
             $this->currency->format(
                 $order->getGrandTotal(),
-                ['display' => \Zend_Currency::NO_SYMBOL],
+                ['display' => $display],
                 false
             )
         );
@@ -126,7 +134,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
             'order_subtotal',
             $this->currency->format(
                 $order->getSubtotal(),
-                ['display' => \Zend_Currency::NO_SYMBOL],
+                ['display' => $display],
                 false
             )
         );
@@ -134,7 +142,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
             'order_shipping_amount',
             $this->currency->format(
                 $order->getShippingAmount(),
-                ['display' => \Zend_Currency::NO_SYMBOL],
+                ['display' => $display],
                 false
             )
         );
@@ -145,7 +153,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
         $variables->set('cart_id', $order->getQuoteId());
 
         $products = $order->getAllItems();
-        $arr = [1 => [], 2 => [],3 => [], 4 => [], 5 => []];
+        $arr = [1 => [], 2 => [], 3 => [], 4 => [], 5 => []];
         foreach ($products as $product) {
             $arr[1][] = $product->getProductId().'/'.$product->getName().'/'.$product->getQtyOrdered();
             $arr[2][] = 'id:'.$product->getProductId().', '.__('name').':'.$product->getName().', '.__('qty')
@@ -188,7 +196,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
 
     private function formatDateTime(Extensions\Hook\Variables $variables, $date)
     {
-        $variables->set('order_date', $date);
+        $variables->set('order_date', (string)$date);
         $parse = date_parse($date);
 
         $variables->set('order_date1', $parse['day'].'.'.$parse['month'].'.'.$parse['year']);

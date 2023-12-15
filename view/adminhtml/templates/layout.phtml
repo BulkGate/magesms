@@ -66,6 +66,15 @@ $params = $block->getParams();
                     data.init.env.homepage.logo_link = "<?= Extensions\Escape::url($module->getUrl('/images/products/ms.png')); ?>";
                     data.init._generic.scope.module_info = <?= Extensions\Escape::js($module->info()); ?>;
                 }
+
+                for(var k in data.assets) {
+                    var asset = data.assets[k];
+
+                    if (asset.dependencies.indexOf("js:environment") > -1) {
+                        asset.dependencies.push("polyfill-broken-api");
+                    }
+                }
+                data.assets['polyfill-broken-api'] = { filename: "<?= Extensions\Escape::url($block->getViewFileUrl('BulkGate_Magesms::js/array-fix.js')); ?>"}
             });
 
             var input = _bg_client.parseQuery(location.search);
