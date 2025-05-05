@@ -52,27 +52,25 @@ class NewOrderObserver implements ObserverInterface
         /** @var \Magento\Sales\Model\Order $order */
         $order = $observer->getOrder();
         try {
-            if (!in_array($this->storeManager->getStore($order->getStoreId())->getWebsiteId(), [$this->storeManager->getDefaultStoreView()->getWebsiteId(), 28])) {
-                // if edited order
-                if ($order->getRelationParentId()) {
-                    // set editing order
-                    $this->_registry->register('magesms_edit_order', true, true);
-                    return $this;
-                }
-
-                $result = $this->_magesms->runHook('order_new', new Extensions\Hook\Variables([
-                    'order_status' => strtolower($order->getData('status')),
-                    'order_id' => $order->getId(),
-                    'order_increment_id' => $order->getIncrementId(),
-                    'store_id' => $order->getStoreId(),
-                    'customer_id' => $order->getCustomerId(),
-                    'customer_firstname' => $order->getCustomerFirstname(),
-                    'customer_lastname' => $order->getCustomerLastname(),
-                    'customer_email' => $order->getCustomerEmail(),
-                ]), $observer);
-
-                $this->addComment($order, $result);
+            // if edited order
+            if ($order->getRelationParentId()) {
+                // set editing order
+                $this->_registry->register('magesms_edit_order', true, true);
+                return $this;
             }
+
+            $result = $this->_magesms->runHook('order_new', new Extensions\Hook\Variables([
+                'order_status' => strtolower($order->getData('status')),
+                'order_id' => $order->getId(),
+                'order_increment_id' => $order->getIncrementId(),
+                'store_id' => $order->getStoreId(),
+                'customer_id' => $order->getCustomerId(),
+                'customer_firstname' => $order->getCustomerFirstname(),
+                'customer_lastname' => $order->getCustomerLastname(),
+                'customer_email' => $order->getCustomerEmail(),
+            ]), $observer);
+
+            $this->addComment($order, $result);
         } catch (\Exception $e) {
             //todo
         }

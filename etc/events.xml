@@ -3,7 +3,7 @@
     <event name="customer_register_success">
         <observer name="magesms_register_success" instance="BulkGate\Magesms\Observer\CustomerRegisterSuccessObserver" />
     </event>
-    <event name="sales_order_place_after">
+    <event name="checkout_submit_all_after">
         <observer name="magesms_new_order" instance="BulkGate\Magesms\Observer\NewOrderObserver" />
     </event>
     <event name="sales_order_save_after">
