@@ -40,9 +40,9 @@ class LocaleSimple extends Strict implements LocaleInterface
         return (string) (int) $number;
     }
 
-    public function datetime(DateTime $date_time)
+    public function datetime(DateTime $dateTime)
     {
-        return $date_time->format($this->date_format.' '.$this->time_format);
+        return $dateTime->format($this->date_format.' '.$this->time_format);
     }
 
     public function date(DateTime $date)

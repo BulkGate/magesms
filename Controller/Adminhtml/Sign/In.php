@@ -1,11 +1,13 @@
 <?php
 namespace BulkGate\Magesms\Controller\Adminhtml\Sign;
 
+use BulkGate\Magesms\Controller\Adminhtml\Action;
+
 /**
  * Class In
  * @package BulkGate\Magesms\Controller\Adminhtml\Sign
  */
-class In extends \BulkGate\Magesms\Controller\Adminhtml\Action
+class In extends Action
 {
     public function execute()
     {

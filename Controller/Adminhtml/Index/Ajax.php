@@ -73,7 +73,7 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 break;
             case 'save_module_settings':
                 $post = $this->getRequest()->getParam('__bulkgate');
-                $proxy = $this->getDIContainer()->getProxy()->saveSettings($post);
+                $this->getDIContainer()->getProxy()->saveSettings($post);
                 $response->addData(['redirect' => $this->getUrl('*/module_settings')]);
                 break;
             case 'save_module_customers':
@@ -119,7 +119,7 @@ class Ajax extends \BulkGate\Magesms\Controller\Adminhtml\Action
                 $response->addData(get_object_vars($proxy));
                 break;
             case 'logout_module':
-                $proxy = $this->getDIContainer()->getProxy()->logout();
+                $this->getDIContainer()->getProxy()->logout();
                 $response->addData(['token' => 'guest', 'redirect' => $this->getUrl('*/sign/in')]);
                 $this->getMageHelper()->setActivate(false);
                 break;

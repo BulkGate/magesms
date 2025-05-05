@@ -110,11 +110,11 @@ abstract class DIContainer extends Strict
 
     /**
      * @param string $name
-     * @param array $args
+     * @param array $arguments
      * @return mixed
      * @throws ServiceNotFoundException
      */
-    public function __call($name, array $args = [])
+    public function __call($name, array $arguments = [])
     {
         if (preg_match("~^get(?<name>[A-Z][a-zA-Z0-9_]*)~", $name, $match)) {
             return $this->getService($match['name']);

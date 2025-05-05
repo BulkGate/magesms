@@ -55,7 +55,7 @@ class FSock extends Strict implements ConnectionInterface
     public function run(Request $request)
     {
         try {
-            $connection = fopen($request->getUrl(), 'r', false, stream_context_create([
+            $connection = fopen($request->getUrl(), 'rb', false, stream_context_create([
                 'http' => [
                     'method' => 'POST',
                     'header' => [

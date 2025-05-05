@@ -10,7 +10,7 @@
  *
  * @category    TOPefekt
  * @package     BulkGate_Magesms
- * @copyright   Copyright (c) 2012-2019 TOPefekt s.r.o. (http://www.mage-sms.com)
+ * @copyright   Copyright (c) 2012-2025 TOPefekt s.r.o. (http://www.mage-sms.com)
  * @license     http://opensource.org/licenses/BSD-3-Clause
  */
 
