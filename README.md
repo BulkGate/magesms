@@ -5,11 +5,10 @@
 ## 1. Module download & installation - manual installation
 
 - Download the extension
-- Unzip the file
-- Upload it to app/code/BulkGate - first you have to create the /BulkGate directory
+- Unzip the downloaded archive directly into app/code/BulkGate/Magesms - create the directory if it does not exist
 - Go to Magento 2 root directory. Run: `php bin/magento setup:upgrade`
 - Run:  `php bin/magento setup:static-content:deploy`
-- Clear all cache
+- Clear all cache: `php bin/magento cache:flush`
 
 ## 2. Service registration (BulkGate registration)
 Fill in the registration form, verify your phone number and accept **terms & conditions** to successfully create BulkGate account
