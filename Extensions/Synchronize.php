@@ -46,7 +46,7 @@ class Synchronize extends Strict
             $server_settings = call_user_func($callback, $module_settings);
 
             if ((isset($server_settings->exception) && $server_settings->exception) ||
-                (isset($server_setting->error) && !empty($server_settings->error))) {
+                (isset($server_settings->error) && !empty($server_settings->error))) {
                 return $server_settings;
             }
             if ($server_settings instanceof IO\Response) {

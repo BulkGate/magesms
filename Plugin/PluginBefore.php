@@ -17,6 +17,11 @@ class PluginBefore
      */
     protected $dIContainer;
 
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
+    protected $_request;
+
     public function __construct(DIContainer $dIContainer)
     {
         $this->dIContainer = $dIContainer;

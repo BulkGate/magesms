@@ -28,7 +28,7 @@ class LocaleIntl extends Strict implements LocaleInterface
     /** @var IntlDateFormatter */
     private $time_formatter;
 
-    public function __construct($locale, DateTimeZone $timeZone = null)
+    public function __construct($locale, ?DateTimeZone $timeZone = null)
     {
         if (extension_loaded('intl')) {
             $this->number_formatter = new NumberFormatter($locale, NumberFormatter::DECIMAL);
