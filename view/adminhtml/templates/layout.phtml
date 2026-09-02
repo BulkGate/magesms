@@ -14,8 +14,8 @@ $params = $block->getParams();
         <div class="container-fluid">
             <div class="nav-wrapper">
                 <div id="brand-logo">
-                    <a class="brand-logo hide-on-med-and-down" href="<?= Extensions\Escape::url($block->getUrl('*/dashboard')); ?>">
-                        <img alt="magesms" width="120" src="<?= Extensions\Escape::url($module->getUrl('/images/products/ms.svg')); ?>" />
+                    <a class="brand-logo hide-on-med-and-down" href="<?= /* @noEscape */ Extensions\Escape::url($block->getUrl('*/dashboard')); ?>">
+                        <img alt="magesms" width="120" src="<?= /* @noEscape */ Extensions\Escape::url($module->getUrl('/images/products/ms.svg')); ?>" />
                     </a>
                 </div>
                 <ul class="controls">
@@ -24,7 +24,7 @@ $params = $block->getParams();
                 </ul>
                 <div class="nav-h1">
                     <span class="h1-divider"></span>
-                    <h1 class="truncate"><?= Extensions\Escape::html($block->getTitle()) ?><span id="react-app-h1-sub"></span></h1>
+                    <h1 class="truncate"><?= /* @noEscape */ Extensions\Escape::html($block->getTitle()) ?><span id="react-app-h1-sub"></span></h1>
                 </div>
             </div>
         </div>
@@ -35,21 +35,21 @@ $params = $block->getParams();
         <div id="react-app-root">
             <div class="loader loading">
                 <div class="spinner"></div>
-                <p><?= Extensions\Escape::html(__('Loading content')); ?></p>
+                <p><?= /* @noEscape */ Extensions\Escape::html(__('Loading content')); ?></p>
             </div>
         </div>
         <div id="react-language-footer"></div>
         <script type="application/javascript">
             var _bg_client_config = {
                 url: {
-                    authenticationService : '<?= $block->getUrl('*/index/ajax') ?>?isAjax=true'
+                    authenticationService : '<?= /* @noEscape */ $block->getUrl('*/index/ajax') ?>?isAjax=true'
                 },
                 actions: {
                     authenticate: function () {
                         return {
                             data: {
                                 action: "authenticate",
-                                form_key: <?= Extensions\Escape::js($block->getFormKey()); ?>,
+                                form_key: <?= /* @noEscape */ Extensions\Escape::js($block->getFormKey()); ?>,
                                 data: {}
                             }
                         }
@@ -57,14 +57,14 @@ $params = $block->getParams();
                 }
             };
         </script>
-        <script src="<?= Extensions\Escape::url($module->getUrl('/'.(defined('BULKGATE_DEV_MODE') ? 'dev' : 'dist').'/widget-api/widget-api.js')); ?>"></script>
+        <script src="<?= /* @noEscape */ Extensions\Escape::url($module->getUrl('/'.(defined('BULKGATE_DEV_MODE') ? 'dev' : 'dist').'/widget-api/widget-api.js')); ?>"></script>
         <script type="application/javascript">
             _bg_client.registerMiddleware(function (data)
             {
                 if(data.init._generic)
                 {
-                    data.init.env.homepage.logo_link = "<?= Extensions\Escape::url($module->getUrl('/images/products/ms.png')); ?>";
-                    data.init._generic.scope.module_info = <?= Extensions\Escape::js($module->info()); ?>;
+                    data.init.env.homepage.logo_link = "<?= /* @noEscape */ Extensions\Escape::url($module->getUrl('/images/products/ms.png')); ?>";
+                    data.init._generic.scope.module_info = <?= /* @noEscape */ Extensions\Escape::js($module->info()); ?>;
                 }
 
                 for(var k in data.assets) {
@@ -74,26 +74,26 @@ $params = $block->getParams();
                         asset.dependencies.push("polyfill-broken-api");
                     }
                 }
-                data.assets['polyfill-broken-api'] = { filename: "<?= Extensions\Escape::url($block->getViewFileUrl('BulkGate_Magesms::js/array-fix.js')); ?>"}
+                data.assets['polyfill-broken-api'] = { filename: "<?= /* @noEscape */ Extensions\Escape::url($block->getViewFileUrl('BulkGate_Magesms::js/array-fix.js')); ?>"}
             });
 
             var input = _bg_client.parseQuery(location.search);
 
-            _bg_client.require(<?= Extensions\Escape::js($settings->load('static:application_id', '')); ?>, {
+            _bg_client.require(<?= /* @noEscape */ Extensions\Escape::js($settings->load('static:application_id', '')); ?>, {
                 product: 'ms',
-                language: <?= Extensions\Escape::js($settings->load('main:language', 'en')); ?>,
-                salt: "<?= Extensions\Compress::compress($block->getSalt()); ?>",
+                language: <?= /* @noEscape */ Extensions\Escape::js($settings->load('main:language', 'en')); ?>,
+                salt: "<?= /* @noEscape */ Extensions\Compress::compress($block->getSalt()); ?>",
                 view : {
-                    presenter: <?= Extensions\Escape::js($block->getPresenter()) ?>,
-                    action: <?= Extensions\Escape::js($block->getAction()) ?>,
+                    presenter: <?= /* @noEscape */ Extensions\Escape::js($block->getPresenter()) ?>,
+                    action: <?= /* @noEscape */ Extensions\Escape::js($block->getAction()) ?>,
                 },
                 params: {
-                    id: <?php if(isset($params['id'])): echo Extensions\Escape::js($params['id']); else: ?>input["id"]<?php  endif; ?>,
-                    key: <?php if(isset($params['key'])): echo Extensions\Escape::js($params['key']); else: ?>input["key"]<?php  endif; ?>,
-                    type: <?php if(isset($params['type'])): echo Extensions\Escape::js($params['type']); else: ?>input["type"]<?php  endif; ?>,
-                    profile_id: <?php if(isset($params['profile_id'])): echo Extensions\Escape::js($params['profile_id']); else: ?>input["profile_id"]<?php  endif; ?>
+                    id: <?= /* @noEscape */ isset($params['id']) ? Extensions\Escape::js($params['id']) : 'input["id"]' ?>,
+                    key: <?= /* @noEscape */ isset($params['key']) ? Extensions\Escape::js($params['key']) : 'input["key"]' ?>,
+                    type: <?= /* @noEscape */ isset($params['type']) ? Extensions\Escape::js($params['type']) : 'input["type"]' ?>,
+                    profile_id: <?= /* @noEscape */ isset($params['profile_id']) ? Extensions\Escape::js($params['profile_id']) : 'input["profile_id"]' ?>
                 },
-                proxy: <?= Extensions\Escape::js($block->getProxyLinks()); ?>
+                proxy: <?= /* @noEscape */ Extensions\Escape::js($block->getProxyLinks()); ?>
             });
         </script>
     </div>

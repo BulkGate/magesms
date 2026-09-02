@@ -56,7 +56,7 @@ class Database extends Extensions\Strict implements Extensions\Database\Database
 
     public function escape($string)
     {
-        return PDO::quote($string);
+        return $this->db->quote($string);
     }
 
     public function prefix()

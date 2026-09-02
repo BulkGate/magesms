@@ -20,7 +20,7 @@ class Request extends stdClass implements RequestInterface
     {
         if (!isset($_SERVER['REQUEST_METHOD']) || (isset($_SERVER['REQUEST_METHOD']) &&
                 strtolower($_SERVER['REQUEST_METHOD']) !== 'post')) {
-            throw new Extensions\API\Exceptions\ConnectionException('Method Not Allowed', 405);
+            throw new Extensions\Api\Exceptions\ConnectionException('Method Not Allowed', 405);
         }
 
         $this->headers = $headers;
@@ -34,7 +34,7 @@ class Request extends stdClass implements RequestInterface
                 try {
                     $this->data = Extensions\Json::decode($data, Extensions\Json::FORCE_ARRAY);
                 } catch (Extensions\Exceptions\JsonException $e) {
-                    throw new Extensions\API\Exceptions\ConnectionException('Bad Request', 400);
+                    throw new Extensions\Api\Exceptions\ConnectionException('Bad Request', 400);
                 }
             } elseif ($content_type === 'application/zip') {
                 $this->data = Extensions\Json::decode(
@@ -42,10 +42,10 @@ class Request extends stdClass implements RequestInterface
                     Extensions\Json::FORCE_ARRAY
                 );
             } else {
-                throw new Extensions\API\Exceptions\ConnectionException('Bad Request', 400);
+                throw new Extensions\Api\Exceptions\ConnectionException('Bad Request', 400);
             }
         } else {
-            throw new Extensions\API\Exceptions\ConnectionException('Bad Request', 400);
+            throw new Extensions\Api\Exceptions\ConnectionException('Bad Request', 400);
         }
     }
 

@@ -83,12 +83,10 @@ class Curl extends Strict implements ConnectionInterface
         $json = substr($response, $header_size);
 
         if ($json) {
-            curl_close($curl);
             return new Response($json, $header->getContentType());
         }
 
         $error = curl_error($curl);
-        curl_close($curl);
         return new Response([
             'data' => [],
             'error' => [

@@ -45,7 +45,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
     /** @var \Magento\Framework\App\RequestInterface */
     protected $request;
 
-    public function __construct(EventObserver $observer = null)
+    public function __construct(?EventObserver $observer = null)
     {
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
 
@@ -228,7 +228,7 @@ class HookLoad extends Extensions\Strict implements Extensions\Hook\LoadInterfac
 
         $variables->set('product_quantity', $item->getQty());
 
-        /** @var \Magento\Catalog\Model\Product $product */
+        /** @var \Magento\Catalog\Model\Product|null $product */
         $product = $this->registry->registry('product');
         if (empty($product)) {
             return;
